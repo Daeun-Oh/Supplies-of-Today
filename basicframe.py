@@ -31,7 +31,7 @@ class MyApp:
         self.search_button.pack(pady=10)
 
         # 날씨 정보 프레임
-        self.weather_info_frame = tk.Frame(self.left_frame, width=200, height=500, relief=tk.SOLID, borderwidth=1)
+        self.weather_info_frame = tk.Frame(self.left_frame, width=8, height=500, relief=tk.SOLID, borderwidth=1)
         self.weather_info_frame.pack(pady=10)
 
         # "오늘의 날씨 정보" 레이블

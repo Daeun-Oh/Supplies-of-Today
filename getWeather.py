@@ -106,8 +106,8 @@ def getWeather(ix, iy):
             quote_plus('ServiceKey') : ServiceKey,
             quote_plus('numOfRows') : '300',    #192
             quote_plus('dataType') : 'JSON',
-            quote_plus('base_date') : '20230523',
-            quote_plus('base_time') : '2300',
+            quote_plus('base_date') : '20230524',
+            quote_plus('base_time') : '0200',
             quote_plus('nx') : x,
             quote_plus('ny') : y
         }

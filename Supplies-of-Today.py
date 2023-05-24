@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font, Canvas
 from getLocation import *
 from getWeather import getWeather
+from PIL import Image, ImageTk
 
 
 
@@ -15,10 +16,11 @@ class ProjectSoT:
 
     def __init__(self):
         self.window = Tk()
-        self.window.geometry("1200x800")
+        self.window.geometry("1200x500")
+        self.window.title("오늘의 준비물✔️")
 
-        self.frame1 = Frame(self.window)
-        self.frame2 = Frame(self.window)
+        self.frame1 = Frame(self.window, bg = '#FFCC99', width=1200, height=500)    # 지도 띄우는 창
+        self.frame2 = Frame(self.window)    # 그래프 띄우는 창
 
         self.InitFrame1()
 
@@ -30,7 +32,7 @@ class ProjectSoT:
         self.TempFont = font.Font(size=16, weight='bold', family='Consolas')
         self.label = []  # 라벨 배열
         self.entry = []
-        self.label.append(Label(self.frame1, text="안녕", font=self.TempFont))
+        self.label.append(Label(self.frame1, text="안녕", font=self.TempFont, bg='#FFCC99'))
         self.label[0].grid(row=0, column=0)
 
         self.entry.append(Entry(self.frame1, font=self.TempFont))
@@ -49,7 +51,21 @@ class ProjectSoT:
         weather = getWeather(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4))
         self.frame2.grid(row=0, column=0)
 
-        Button(self.frame2, text="검색", font=self.TempFont, command=self.moveToFrame1).grid(row=11, column=0)
+        self.weatherFrame = Frame(self.frame2, width=500, height=600, bg='#FFCC99')
+        self.weatherFrame.grid(row=0, column=0)
+
+        # 이미지 로드
+        image = Image.open("sunny.png")  # 이미지 파일
+        image = image.resize((300, 300))  # 이미지 크기 조정
+
+        # 이미지를 Tkinter에서 사용할 수 있는 형식으로 변환
+        photo = ImageTk.PhotoImage(image)
+        label = Label(self.weatherFrame, image=photo)
+        label.image = photo
+        label.grid(row=1, column=0)
+
+        button = Button(self.weatherFrame, text="검색", font=self.TempFont, command=self.moveToFrame1)
+        button.grid(row=0, column=0)
 
         print("현재 주소:", self.locationAddr)
         print("현재 좌표:", self.locationCoor)
