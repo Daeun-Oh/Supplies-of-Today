@@ -46,7 +46,7 @@ class ProjectSoT:
 
         self.SearchFont = font.Font(size=15, family='Dovemayo_gothic')
         self.ButtonFont = font.Font(size=11, family='Dovemayo_gothic')
-        self.label = Label(self.frame1, text="안녕", font=self.SearchFont, bg='#FFCC99')
+        self.label = Label(self.frame1, text="주소 검색창", font=self.SearchFont, bg='#FFCC99')
         self.entry = Entry(self.frame1, font=self.SearchFont)
         self.label.pack()
         self.entry.pack()
@@ -54,7 +54,7 @@ class ProjectSoT:
         Button(self.frame1, text="  보기  ", font=self.ButtonFont, command=self.saveLocation).pack()
 
     def saveLocation(self): # frame1의 보기 버튼 누르면 실행
-        self.locationAddr = str(self.entry[0].get())
+        self.locationAddr = str(self.entry.get())
         self.locationCoor = geocoding(self.locationAddr)
         self.frame1.pack_forget()  # frame1 숨기기
         if self.frame2 is not None:
@@ -280,7 +280,7 @@ class ProjectSoT:
 
     def moveToFrame1(self):
         self.frame2.place_forget()  # owindow 최소화
-        self.frame1.pack()   # swindow 표시
+        self.frame1.pack(fill="both", expand=True)   # swindow 표시
 
     def run(self):
         self.window.mainloop()
