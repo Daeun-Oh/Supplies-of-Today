@@ -91,23 +91,24 @@ def getWeather(ix, iy):
     today = datetime.date.today()
     now = datetime.datetime.now()
     baseData = today.strftime('%Y%m%d')
-    baseTime = now.strftime('%H%M')
-    if int(baseTime) < 500:
-        baseTime = str(2400+int(baseTime)-500)
+    baseTime = now.strftime('%H')
+    if int(baseTime) == 0:
+        baseTime = '23'
         baseData = str(int(baseData)-1)
     else:
-        baseTime = str(int(baseTime) - 500)
-        if len(baseTime) != 4:
-            baseTime = '0'*(4-len(baseTime))+baseTime
-    print(baseTime)
+        baseTime = str(int(baseTime) - 1)
+        if len(baseTime) != 2:
+            baseTime = '0'+baseTime
+    baseTime += '00'
+    print(baseData, baseTime)
 
     queryParams = '?' + urlencode(
         {
             quote_plus('ServiceKey') : ServiceKey,
-            quote_plus('numOfRows') : '300',    #192
+            quote_plus('numOfRows') : '205',    #192
             quote_plus('dataType') : 'JSON',
-            quote_plus('base_date') : '20230524',
-            quote_plus('base_time') : '0200',
+            quote_plus('base_date') : '20230525',
+            quote_plus('base_time') : '2300',
             quote_plus('nx') : x,
             quote_plus('ny') : y
         }
