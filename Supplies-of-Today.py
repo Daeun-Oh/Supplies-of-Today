@@ -4,6 +4,7 @@ from getLocation import *
 from getWeather import getWeather
 from getFineDust import getNowAirPollution
 from PIL import Image, ImageTk, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.font_manager as fm
@@ -131,13 +132,13 @@ class ProjectSoT:
 
         ##########################################
 
-        i = 0
-        for key in list(weather.keys()):
-            #print(i, w)
-            if i < 1:
-                del(weather[key])
-            i += 1
-        print(weather)
+        #i = 0
+        #for key in list(weather.keys()):
+        #    #print(i, w)
+        #    if i < 1:
+        #        del(weather[key])
+        #    i += 1
+        #print(weather)
 
         # 데이터 추출
         for hour, info in weather.items():
@@ -198,24 +199,39 @@ class ProjectSoT:
         self.graph1.pack(side=LEFT)
 
         fig = Figure(figsize=(4, 4), facecolor="#FFCC99", dpi=100)
-        ax = fig.add_subplot(111)
+        ax1 = fig.add_subplot(111)
+        ax1_t = ax1.twinx()     # 강수량 y축
 
         # 막대 그래프
         x_bar = np.arange(len(self.precipitationRate))
-        ax.bar(x_bar, self.precipitationRate, label='rate', color="#9CB8BC")
+        ax1.bar(x_bar, self.precipitationRate, label='rate', color="#9CB8BC")
 
         # 선형 그래프
         x_linear = np.arange(len(self.precipitation))
-        ax.plot(x_linear, self.precipitation, marker='', label='precipitation', color="#718F8E")
+        ax1_t.plot(x_linear, self.precipitation, marker='', label='precipitation', color="#718F8E")
 
-        ax.set_title('강수 그래프', fontproperties=GraphFont, pad=20)
+        ax1.set_title('강수 그래프', fontproperties=GraphFont, pad=20)
 
         # x축 눈금의 위치와 레이블 설정
         xticks_pos = range(len(self.hours))
-        ax.set_xticks(xticks_pos)
-        ax.set_xticklabels(self.hours, rotation='vertical')
+        ax1.set_xticks(xticks_pos)
+        ax1.set_xticklabels(self.hours, rotation='vertical')
 
-        ax.legend()
+        # 두 y축 범례를 하나의 범례로 표시
+        lines, labels = ax1.get_legend_handles_labels()
+        lines2, labels2 = ax1_t.get_legend_handles_labels()
+        ax1.legend(lines + lines2, labels + labels2, loc='best')
+
+        # 왼쪽 y축 범위 설정
+        ax1.set_ylim(0.0, 100.0)
+
+        # 오른쪽 y축 범위 설정
+        if all(value == 0.0 for value in self.precipitation):
+            ax1_t.set_ylim(0.0, 1.0)  # 모든 값이 0.0인 경우에는 0.0부터 1.0까지의 범위로 설정
+        elif max(self.precipitation) <= 5.0:
+            ax1_t.set_ylim(0.0, 5.0)
+        else:
+            ax1_t.set_ylim(min(self.precipitation), max(self.precipitation))
 
         canvas = FigureCanvasTkAgg(fig, master=self.graph1)
         canvas.draw()
