@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import font, Canvas
+from getMap import *
 from getLocation import *
 from getWeather import getWeather
 from getFineDust import getNowAirPollution
@@ -53,6 +54,16 @@ class ProjectSoT:
         self.entry.pack()
 
         Button(self.frame1, text="  보기  ", font=self.ButtonFont, command=self.saveLocation).pack()
+
+        def label_click(event):
+            show_map()
+
+        underline_font = font.Font(family="Dovemayo_gothic", size=11, underline=True)
+        label = tk.Label(self.frame1, text="지도를 보고싶으면 클릭하세요", bg="#FFCC99", fg="#000000", font=underline_font)
+        label.pack()
+
+        label.bind("<Button-1>", label_click)
+
 
     def saveLocation(self): # frame1의 보기 버튼 누르면 실행
         self.locationAddr = str(self.entry.get())
