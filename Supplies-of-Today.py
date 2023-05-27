@@ -44,42 +44,44 @@ class ProjectSoT:
     def InitFrame1(self):
         print("프레임1 입장")
         print("현재 좌표:", self.locationCoor)
-        self.frame1.pack(fill="both", expand=True)  # 프레임을 창 전체에 채우기
+        self.frame1.place(x=0, y=0, width=1200, height=500)
+
+        self.leftFrame1 = Frame(self.frame1, bg="#FFCC99")
+        self.leftFrame1.place(x=0, y=0, width=400, height=500)
+
+        self.rightFrame1 = Frame(self.frame1, bg='yellow')
+        self.rightFrame1.place(x=400, y=0, width=800, height=500)
+
+        setup(self.rightFrame1)
 
         self.SearchFont = font.Font(size=15, family='Dovemayo_gothic')
         self.ButtonFont = font.Font(size=11, family='Dovemayo_gothic')
-        self.label = Label(self.frame1, text="주소 검색창", font=self.SearchFont, bg='#FFCC99')
-        self.entry = Entry(self.frame1, font=self.SearchFont)
+        self.label = Label(self.leftFrame1, text="주소 검색창", font=self.SearchFont, bg='#FFCC99')
+        self.entry = Entry(self.leftFrame1, font=self.SearchFont)
         self.label.pack()
         self.entry.pack()
 
-        Button(self.frame1, text="  보기  ", font=self.ButtonFont, command=self.saveLocation).pack()
+        Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont, command=self.moveToFrame2).pack()
+        Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).pack()
+        # def label_click(event):
+        #     show_map()
 
-        def label_click(event):
-            show_map()
+        # underline_font = font.Font(family="Dovemayo_gothic", size=11, underline=True)
+        # label = tk.Label(self.frame1, text="지도를 보고싶으면 클릭하세요", bg="#FFCC99", fg="#000000", font=underline_font)
+        # label.pack()
 
-        underline_font = font.Font(family="Dovemayo_gothic", size=11, underline=True)
-        label = tk.Label(self.frame1, text="지도를 보고싶으면 클릭하세요", bg="#FFCC99", fg="#000000", font=underline_font)
-        label.pack()
-
-        label.bind("<Button-1>", label_click)
-
+        # label.bind("<Button-1>", label_click)
 
     def saveLocation(self): # frame1의 보기 버튼 누르면 실행
-        self.locationAddr = str(self.entry.get())
-        self.locationCoor = geocoding(self.locationAddr)
-        self.frame1.pack_forget()  # frame1 숨기기
-        if self.frame2 is not None:
-            self.hours = []  # 읽어온 시간
-            self.temperatures = []  # 기온
-            self.sky = ''  # 하늘상태
-            self.precipitation = []  # 강수량
-            self.precipitationRate = []  # 강수확률
+        if str(self.entry.get()) == "":
+            print("검색이 안 됨")
+        else:
+            self.locationAddr = str(self.entry.get())
+            self.locationCoor = geocoding(self.locationAddr)
 
-            self.img_tk = None
-            self.frame2.destroy()
-        self.InitFrame2()
-
+    def reloadMap(self):
+        self.saveLocation()
+        reloadMap([float(self.locationCoor['lat']),self.locationCoor["lng"]])
     def InitFrame2(self):
         print("프레임2 입장")
         self.frame2 = Frame(self.window, bg='#FFCC99', width=1200, height=500)
@@ -87,14 +89,14 @@ class ProjectSoT:
         self.frame2.place(x=0, y=0, width=1200, height=500)
 
 
-        self.leftFrame = Frame(self.frame2, bg="#FFCC99")
-        self.leftFrame.place(x=0, y=50, width=400, height=450, anchor='nw')
+        self.leftFrame2 = Frame(self.frame2, bg="#FFCC99")
+        self.leftFrame2.place(x=0, y=50, width=400, height=450, anchor='nw')
 
-        self.rightFrame = Frame(self.frame2, bg="#FFCC99")
-        self.rightFrame.place(x=400, y=0, width=800, height=500, anchor='nw')
+        self.rightFrame2 = Frame(self.frame2, bg="#FFCC99")
+        self.rightFrame2.place(x=400, y=0, width=800, height=500, anchor='nw')
 
 
-        buttonS = Button(self.leftFrame, text="    검색    ", font=self.ButtonFont, command=self.moveToFrame1)
+        buttonS = Button(self.leftFrame2, text="    검색    ", font=self.ButtonFont, command=self.moveToFrame1)
         buttonS.place(x=200, y=0, anchor='n')
 
         print("현재 주소:", self.locationAddr)
@@ -111,7 +113,7 @@ class ProjectSoT:
 
         photoC = ImageTk.PhotoImage(imageC)
 
-        self.button1 = Button(self.leftFrame, bg='white', image=photoC, command=self.recommend_outfit)
+        self.button1 = Button(self.leftFrame2, bg='white', image=photoC, command=self.recommend_outfit)
         self.button1.place(x=buttonX, y=buttonY)
         self.button1.image = photoC
 
@@ -124,7 +126,7 @@ class ProjectSoT:
 
         photoK = ImageTk.PhotoImage(imageK)
 
-        self.button2 = Button(self.leftFrame, bg='white', image=photoK)
+        self.button2 = Button(self.leftFrame2, bg='white', image=photoK)
         self.button2.place(x=buttonX, y=buttonY)
         self.button2.image = photoK
 
@@ -137,7 +139,7 @@ class ProjectSoT:
 
         photoT = ImageTk.PhotoImage(imageT)
 
-        self.button3 = Button(self.leftFrame, bg='white', image=photoT)
+        self.button3 = Button(self.leftFrame2, bg='white', image=photoT)
         self.button3.place(x=buttonX, y=buttonY)
         self.button3.image = photoT
 
@@ -198,7 +200,7 @@ class ProjectSoT:
 
         # 이미지를 Tkinter에서 사용할 수 있는 형식으로 변환
         photo = ImageTk.PhotoImage(weatherImage)
-        label_image = Label(self.leftFrame, image=photo)
+        label_image = Label(self.leftFrame2, image=photo)
         label_image.image = photo
         label_image.place(x=200, y=60, anchor="n")
 
@@ -206,7 +208,7 @@ class ProjectSoT:
         font_path = 'Dovemayo_gothic.ttf'
         GraphFont = fm.FontProperties(fname=font_path, size=15, weight='bold')
 
-        self.graph1 = Frame(self.rightFrame, width=400, height=500)
+        self.graph1 = Frame(self.rightFrame2, width=400, height=500)
         self.graph1.pack(side=LEFT)
 
         fig = Figure(figsize=(4, 4), facecolor="#FFCC99", dpi=100)
@@ -249,7 +251,7 @@ class ProjectSoT:
         canvas.get_tk_widget().pack(side='left')
 
         # 기온 막대 그래프
-        self.graph2 = Frame(self.rightFrame, width=400, height=550)
+        self.graph2 = Frame(self.rightFrame2, width=400, height=550)
         self.graph2.pack(side=LEFT)
 
         fig2 = Figure(figsize=(4, 4), facecolor="#FFCC99", dpi=100)
@@ -305,7 +307,21 @@ class ProjectSoT:
         label = Label(outfit_window, image=self.img_tk, width=496, height=662)
         label.pack()
 
+    def moveToFrame2(self):
+        self.frame1.pack_forget()  # frame1 숨기기
+        if self.frame2 is not None:
+            self.hours = []  # 읽어온 시간
+            self.temperatures = []  # 기온
+            self.sky = ''  # 하늘상태
+            self.precipitation = []  # 강수량
+            self.precipitationRate = []  # 강수확률
+
+            self.img_tk = None
+            self.frame2.destroy()
+        self.InitFrame2()
+
     def moveToFrame1(self):
+        self.saveLocation()
         self.frame2.place_forget()  # owindow 최소화
         self.frame1.pack(fill="both", expand=True)   # swindow 표시
 
