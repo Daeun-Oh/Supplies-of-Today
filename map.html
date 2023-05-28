@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_4f05c06b4fd5a5a29b51ff2797978c99 {
+                #map_446873a124673ea8208013b3e5a16d99 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_4f05c06b4fd5a5a29b51ff2797978c99" ></div>
+            <div class="folium-map" id="map_446873a124673ea8208013b3e5a16d99" ></div>
         
 </body>
 <script>
     
     
-            var map_4f05c06b4fd5a5a29b51ff2797978c99 = L.map(
-                "map_4f05c06b4fd5a5a29b51ff2797978c99",
+            var map_446873a124673ea8208013b3e5a16d99 = L.map(
+                "map_446873a124673ea8208013b3e5a16d99",
                 {
-                    center: [37.53551415, 126.62890922926871],
+                    center: [37.4975, 126.8501],
                     crs: L.CRS.EPSG3857,
-                    zoom: 13,
+                    zoom: 15,
                     zoomControl: true,
                     preferCanvas: false,
                 }
@@ -60,28 +60,28 @@
 
         
     
-            var tile_layer_5626ff3706d72844b811365f1e6ea028 = L.tileLayer(
+            var tile_layer_8c52fd40010698d0f069117bfd670d10 = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
-            ).addTo(map_4f05c06b4fd5a5a29b51ff2797978c99);
+            ).addTo(map_446873a124673ea8208013b3e5a16d99);
         
     
-            var marker_97480a3446438e50d10356ad4471abc2 = L.marker(
-                [37.53551415, 126.62890922926871],
+            var marker_e9854833944a190a04027bc3f783df31 = L.marker(
+                [37.4975, 126.8501],
                 {}
-            ).addTo(map_4f05c06b4fd5a5a29b51ff2797978c99);
+            ).addTo(map_446873a124673ea8208013b3e5a16d99);
         
     
-        var popup_f68a5c0ab47e99b74636fd8030809c2a = L.popup({"maxWidth": "100%"});
+        var popup_640870660ecaa2543c892ae61334a746 = L.popup({"maxWidth": "100%"});
 
         
             
-                var html_00e8d8c0a4de34ab222566f18da5dced = $(`<div id="html_00e8d8c0a4de34ab222566f18da5dced" style="width: 100.0%; height: 100.0%;">서울대</div>`)[0];
-                popup_f68a5c0ab47e99b74636fd8030809c2a.setContent(html_00e8d8c0a4de34ab222566f18da5dced);
+                var html_c682fd41675125bb30fbdf602c3fb012 = $(`<div id="html_c682fd41675125bb30fbdf602c3fb012" style="width: 100.0%; height: 100.0%;">현재 위치</div>`)[0];
+                popup_640870660ecaa2543c892ae61334a746.setContent(html_c682fd41675125bb30fbdf602c3fb012);
             
         
 
-        marker_97480a3446438e50d10356ad4471abc2.bindPopup(popup_f68a5c0ab47e99b74636fd8030809c2a)
+        marker_e9854833944a190a04027bc3f783df31.bindPopup(popup_640870660ecaa2543c892ae61334a746)
         ;
 
         

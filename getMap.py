@@ -1,16 +1,9 @@
-#api_key = AIzaSyB2d8ZBeA7WoD3v4cbsgihUvC1IbmrrAIU
-
-#엄청난 문제점: entry(검색창)이 안 먹힘
-#예상 이유: 지도가 무한루프라 메인 윈도우창의 이벤트 루프가 시작되지 않음 (근데 클릭은 됨)
+#지도가 무한루프라 메인 윈도우창의 이벤트 루프가 시작되지 않음 (근데 클릭은 됨)
 #chat gpt는 threading 모듈을 통해
-#Tkiner 이벤트 루프는 메인 스레드에서 실행하고,
+#대안1: Tkiner 이벤트 루프는 메인 스레드에서 실행하고,
 #웹뷰는 별도의 스레드에서 실행하여 두 가지를 동시에 작동시키라고 함.
-#근데 가능할지는 모르겠음
-#대안: entry는 없애고 지역 선택으로 바꾸기
+#대안2: entry는 없애고 지역 선택으로 바꾸기
 #일단 entry 살리는 거 시도해보고, 대안을 적용시키는 걸로...
-
-#시도1 : Tkinter의 이벤트 루프를 별도의 스레드에서 실행하고, Entry 위젯을 사용자가 입력할 수 있도록 함
-#시도2 : entry는 없애고 지역 선택으로 바꾸기
 
 from getLocation import *
 import tkinter as tk
@@ -30,7 +23,7 @@ def setup(frame):
     current_location = {'lat': location_data['geoplugin_latitude'], 'lng': location_data['geoplugin_longitude']}
 
     # 사용자의 Google Maps API 키
-    api_key = "AIzaSyB2d8ZBeA7WoD3v4cbsgihUvC1IbmrrAIU"
+    api_key = "API_KEY"
 
     # 지도 생성
     m = folium.Map(location=[float(current_location['lat']), float(current_location['lng'])], zoom_start=15)

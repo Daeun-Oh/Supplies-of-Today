@@ -57,7 +57,7 @@ class ProjectSoT:
 
         self.SearchFont = font.Font(size=15, family='Dovemayo_gothic')
         self.ButtonFont = font.Font(size=11, family='Dovemayo_gothic')
-        self.TimeFont = font.Font(size=25, family = 'Dovemayo_gothic')
+        self.TimeFont = font.Font(size=22, family = 'Dovemayo_gothic')
 
 
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
@@ -80,16 +80,14 @@ class ProjectSoT:
 
         self.date_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
         self.date_label.pack()
-
         self.time_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
         self.time_label.pack()
-
         self.update_datetime()
 
     def update_datetime(self):
         current_datetime = datetime.datetime.now()
-        date_str = current_datetime.strftime(" %Y. %m. %d ")
-        time_str = current_datetime.strftime("%H : %M : %S")
+        date_str = current_datetime.strftime(" %Y년 %m월 %d일 ")
+        time_str = current_datetime.strftime("%H시 %M분 %S초")
         self.date_label.config(text=date_str)
         self.time_label.config(text=time_str)
         self.date_label.after(1000, self.update_datetime)
