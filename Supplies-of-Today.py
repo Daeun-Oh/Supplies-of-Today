@@ -11,6 +11,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.font_manager as fm
 import urllib.request
 import numpy as np
+import datetime
 
 
 # 위치 정보 가져오기
@@ -56,6 +57,15 @@ class ProjectSoT:
 
         self.SearchFont = font.Font(size=15, family='Dovemayo_gothic')
         self.ButtonFont = font.Font(size=11, family='Dovemayo_gothic')
+        self.TimeFont = font.Font(size=25, family = 'Dovemayo_gothic')
+
+
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
 
         self.label = Label(self.leftFrame1, text="주소 검색창", font=self.SearchFont, bg='#FFCC99')
         self.entry = Entry(self.leftFrame1, font=self.SearchFont)
@@ -64,6 +74,25 @@ class ProjectSoT:
 
         Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont, command=self.moveToFrame2).pack()
         Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).pack()
+
+        # 간격띄우기
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+
+        self.date_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
+        self.date_label.pack()
+
+        self.time_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
+        self.time_label.pack()
+
+        self.update_datetime()
+
+    def update_datetime(self):
+        current_datetime = datetime.datetime.now()
+        date_str = current_datetime.strftime(" %Y. %m. %d ")
+        time_str = current_datetime.strftime("%H : %M : %S")
+        self.date_label.config(text=date_str)
+        self.time_label.config(text=time_str)
+        self.date_label.after(1000, self.update_datetime)
 
     def enableEntry(self):
         self.entry.config(state='normal')  # 검색창 활성화
