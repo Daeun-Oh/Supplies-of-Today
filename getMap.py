@@ -1,5 +1,3 @@
-#작은 문제점: 내 좌표가 실제좌표와 다름
-#첫번째 프레임에 띄우기 - 지도 배치확인
 #api_key = AIzaSyB2d8ZBeA7WoD3v4cbsgihUvC1IbmrrAIU
 
 #엄청난 문제점: entry(검색창)이 안 먹힘
@@ -11,6 +9,9 @@
 #대안: entry는 없애고 지역 선택으로 바꾸기
 #일단 entry 살리는 거 시도해보고, 대안을 적용시키는 걸로...
 
+#시도1 : Tkinter의 이벤트 루프를 별도의 스레드에서 실행하고, Entry 위젯을 사용자가 입력할 수 있도록 함
+#시도2 : entry는 없애고 지역 선택으로 바꾸기
+
 from getLocation import *
 import tkinter as tk
 import webview
@@ -18,16 +19,18 @@ import folium
 import sys
 from cefpython3 import cefpython as cef
 import threading
+from PIL import ImageTk, Image
 
 browser = None
 
 def setup(frame):
+
     # 현재 좌표 정보 받아오기
     location_data = get_currLocation()
     current_location = {'lat': location_data['geoplugin_latitude'], 'lng': location_data['geoplugin_longitude']}
 
     # 사용자의 Google Maps API 키
-    api_key = "YOUR_API_KEY"
+    api_key = "AIzaSyB2d8ZBeA7WoD3v4cbsgihUvC1IbmrrAIU"
 
     # 지도 생성
     m = folium.Map(location=[float(current_location['lat']), float(current_location['lng'])], zoom_start=15)
@@ -39,7 +42,7 @@ def setup(frame):
     m.save("map.html")
 
     # 브라우저를 위한 쓰레드 생성
-    thread = threading.Thread(target=showMap, args=(frame,))
+    thread = threading.Thread(target=showMap, args=(frame,)) #왜 showMap아래에 빨간줄이 생긴거지
     thread.daemon = True
     thread.start()
 

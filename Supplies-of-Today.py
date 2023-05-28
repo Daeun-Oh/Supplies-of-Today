@@ -56,6 +56,7 @@ class ProjectSoT:
 
         self.SearchFont = font.Font(size=15, family='Dovemayo_gothic')
         self.ButtonFont = font.Font(size=11, family='Dovemayo_gothic')
+
         self.label = Label(self.leftFrame1, text="주소 검색창", font=self.SearchFont, bg='#FFCC99')
         self.entry = Entry(self.leftFrame1, font=self.SearchFont)
         self.label.pack()
@@ -63,16 +64,13 @@ class ProjectSoT:
 
         Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont, command=self.moveToFrame2).pack()
         Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).pack()
-        # def label_click(event):
-        #     show_map()
 
-        # underline_font = font.Font(family="Dovemayo_gothic", size=11, underline=True)
-        # label = tk.Label(self.frame1, text="지도를 보고싶으면 클릭하세요", bg="#FFCC99", fg="#000000", font=underline_font)
-        # label.pack()
+    def enableEntry(self):
+        self.entry.config(state='normal')  # 검색창 활성화
+        self.entry.focus_set()  # 포커스 설정
+        self.entry.icursor("end")  # 입력창 커서를 끝으로 이동
 
-        # label.bind("<Button-1>", label_click)
-
-    def saveLocation(self): # frame1의 보기 버튼 누르면 실행
+    def saveLocation(self):  # frame1의 보기 버튼 누르면 실행
         if str(self.entry.get()) == "":
             print("검색이 안 됨")
         else:
@@ -81,7 +79,9 @@ class ProjectSoT:
 
     def reloadMap(self):
         self.saveLocation()
-        reloadMap([float(self.locationCoor['lat']),self.locationCoor["lng"]])
+        reloadMap([float(self.locationCoor['lat']), self.locationCoor["lng"]])
+
+
     def InitFrame2(self):
         print("프레임2 입장")
         self.frame2 = Frame(self.window, bg='#FFCC99', width=1200, height=500)
