@@ -323,8 +323,24 @@ class ProjectSoT:
         return msg2_5, msg10
 
     def recommend_outfit(self):
-        fashionImage = Image.open("fashion.png")
-        fashionImage = fashionImage.resize((496, 662))  # 이미지 크기 조정
+        if self.temperatures[0]>=28.0:
+            fashionImage = Image.open("fashion_28도이상.png")
+        elif (self.temperatures[0]<=27.0) and (self.temperatures[0]>=23.0):
+            fashionImage = Image.open("fashion_27도이하.png")
+        elif (self.temperatures[0]<=22.0) and (self.temperatures[0]>=20.0):
+            fashionImage = Image.open("fashion_22도이하.png")
+        elif (self.temperatures[0]<=19.0) and (self.temperatures[0]>=17.0):
+            fashionImage = Image.open("fashion_19도이하.png")
+        elif (self.temperatures[0]<=16.0) and (self.temperatures[0]>=12.0):
+            fashionImage = Image.open("fashion_16도이하.png")
+        elif (self.temperatures[0]<=11.0) and (self.temperatures[0]>=9.0):
+            fashionImage = Image.open("fashion_11도이하.png")
+        elif (self.temperatures[0]<=8.0) and (self.temperatures[0]>=5.0):
+            fashionImage = Image.open("fashion_8도이하.png")
+        else:
+            fashionImage = Image.open("fashion_4도이하.png")
+
+        fashionImage = fashionImage.resize((400, 200))  # 이미지 크기 조정
 
         # 이미지를 Tkinter에서 사용할 수 있는 형식으로 변환
         self.img_tk = ImageTk.PhotoImage(fashionImage)
@@ -333,7 +349,7 @@ class ProjectSoT:
         outfit_window = Toplevel(self.window)
         outfit_window.title("온도에 따른 코디 👗")
 
-        label = Label(outfit_window, image=self.img_tk, width=496, height=662)
+        label = Label(outfit_window, image=self.img_tk, width=400, height=200)
         label.pack()
 
     def moveToFrame2(self):

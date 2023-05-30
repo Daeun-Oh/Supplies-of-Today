@@ -1,0 +1,10 @@
+
+[2023-05-30 21:47:06] Traceback (most recent call last):
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 377, in <module>
+    project.run()
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 374, in run
+    self.window.mainloop()
+  File "C:\python3.9\lib\tkinter\__init__.py", line 1429, in mainloop
+    self.tk.mainloop(n)
+KeyboardInterrupt
+
