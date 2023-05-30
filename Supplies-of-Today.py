@@ -4,6 +4,7 @@ from getMap import *
 from getLocation import *
 from getWeather import getWeather
 from getFineDust import getNowAirPollution
+from CopyToClipboard import copyToClipboard
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -112,7 +113,7 @@ class ProjectSoT:
     def InitFrame2(self):
         print("프레임2 입장")
         self.frame2 = Frame(self.window, bg='#FFCC99', width=1200, height=500)
-        weather = getWeather(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4))
+        weather = getWeather(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4), '2300', '290')
         self.frame2.place(x=0, y=0, width=1200, height=500)
 
 
@@ -128,49 +129,6 @@ class ProjectSoT:
 
         print("현재 주소:", self.locationAddr)
         print("현재 좌표:", self.locationCoor)
-
-        ############################################
-        buttonX = 50 + 25
-        buttonY = 330
-
-        # 코디 추천 버튼
-
-        imageC = Image.open("clothes.png")  # 이미지 파일
-        imageC = imageC.resize((70, 70))  # 이미지 크기 조정
-
-        photoC = ImageTk.PhotoImage(imageC)
-
-        self.button1 = Button(self.leftFrame2, bg='white', image=photoC, command=self.recommend_outfit)
-        self.button1.place(x=buttonX, y=buttonY)
-        self.button1.image = photoC
-
-        # 카카오톡 버튼
-
-        buttonX += 90
-
-        imageK = Image.open("kakao.png")  # 이미지 파일
-        imageK = imageK.resize((70, 70))  # 이미지 크기 조정
-
-        photoK = ImageTk.PhotoImage(imageK)
-
-        self.button2 = Button(self.leftFrame2, bg='white', image=photoK)
-        self.button2.place(x=buttonX, y=buttonY)
-        self.button2.image = photoK
-
-        # 텔레그램 버튼
-
-        buttonX += 90
-
-        imageT = Image.open("telegram.png")  # 이미지 파일
-        imageT = imageT.resize((70, 70))  # 이미지 크기 조정
-
-        photoT = ImageTk.PhotoImage(imageT)
-
-        self.button3 = Button(self.leftFrame2, bg='white', image=photoT)
-        self.button3.place(x=buttonX, y=buttonY)
-        self.button3.image = photoT
-
-        ##########################################
 
         #i = 0
         #for key in list(weather.keys()):
@@ -230,6 +188,50 @@ class ProjectSoT:
         label_image = Label(self.leftFrame2, image=photo)
         label_image.image = photo
         label_image.place(x=200, y=60, anchor="n")
+
+        ## 버튼 ##
+        buttonX = 50 + 25
+        buttonY = 330
+
+        # 코디 추천 버튼
+
+        imageC = Image.open("clothes.png")  # 이미지 파일
+        imageC = imageC.resize((70, 70))  # 이미지 크기 조정
+
+        photoC = ImageTk.PhotoImage(imageC)
+
+        self.button1 = Button(self.leftFrame2, bg='white', image=photoC, command=self.recommend_outfit)
+        self.button1.place(x=buttonX, y=buttonY)
+        self.button1.image = photoC
+
+        # 클립보드 복사 버튼
+
+        buttonX += 90
+
+        imageK = Image.open("kakao.png")  # 이미지 파일
+        imageK = imageK.resize((70, 70))  # 이미지 크기 조정
+
+        photoK = ImageTk.PhotoImage(imageK)
+
+        self.button2 = Button(self.leftFrame2, bg='white', image=photoK,\
+                              command=lambda: copyToClipboard(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4), msg2_5, msg10))
+        self.button2.place(x=buttonX, y=buttonY)
+        self.button2.image = photoK
+
+        # 텔레그램 버튼
+
+        buttonX += 90
+
+        imageT = Image.open("telegram.png")  # 이미지 파일
+        imageT = imageT.resize((70, 70))  # 이미지 크기 조정
+
+        photoT = ImageTk.PhotoImage(imageT)
+
+        self.button3 = Button(self.leftFrame2, bg='white', image=photoT)
+        self.button3.place(x=buttonX, y=buttonY)
+        self.button3.image = photoT
+
+        ##########################################
 
         ## 그래프 ##
         font_path = 'Dovemayo_gothic.ttf'

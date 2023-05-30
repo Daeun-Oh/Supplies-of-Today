@@ -9,6 +9,12 @@ def geocoding(address):
 
     return crd
 
+def geocoding_reverse(lat_lng_str):
+    geolocoder = Nominatim(user_agent = 'South Korea', timeout=None)
+    address = geolocoder.reverse(lat_lng_str)
+
+    return address
+
 def get_currLocation():
     url = 'http://www.geoplugin.net/json.gp?'
     response = requests.get(url)

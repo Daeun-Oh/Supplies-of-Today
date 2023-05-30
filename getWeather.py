@@ -82,7 +82,7 @@ def gridToMap(x, y, code = 1):
 
     return lat, lon
 
-def getWeather(ix, iy):
+def getWeather(ix, iy, t, rows):
     (x, y) = mapToGrid(ix, iy)
     print(x, y)
     # API 요청 주소와 필요한 매개변수 설정
@@ -91,8 +91,9 @@ def getWeather(ix, iy):
     today = datetime.date.today()
     now = datetime.datetime.now()
     baseData = today.strftime('%Y%m%d')
-    baseData = str(int(baseData)-1)
-    baseTime = str(2300)
+    if rows == '290':
+        baseData = str(int(baseData)-1)
+    baseTime = t
     #baseTime = now.strftime('%H')
     #if int(baseTime) == 0:
     #    baseTime = '23'
@@ -107,7 +108,7 @@ def getWeather(ix, iy):
     queryParams = '?' + urlencode(
         {
             quote_plus('ServiceKey') : ServiceKey,
-            quote_plus('numOfRows') : '290',    #192
+            quote_plus('numOfRows') : rows,    #290, 한 줄 당?
             quote_plus('dataType') : 'JSON',
             quote_plus('base_date') : baseData,
             quote_plus('base_time') : baseTime,
