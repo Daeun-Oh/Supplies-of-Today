@@ -208,7 +208,7 @@ class ProjectSoT:
 
         buttonX += 90
 
-        imageK = Image.open("kakao.png")  # 이미지 파일
+        imageK = Image.open("clipboard.png")  # 이미지 파일
         imageK = imageK.resize((70, 70))  # 이미지 크기 조정
 
         photoK = ImageTk.PhotoImage(imageK)
