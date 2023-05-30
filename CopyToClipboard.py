@@ -22,7 +22,7 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
         if int(times[i]) > int(currentHour):
             currentHour = times[i-1]
             break
-    currWeather = getWeather(ix, iy, currentHour+'00', '97')
+    currWeather = getWeather(ix, iy, currentHour+'00', '290')    # 97
     print(currWeather)
 
     hours = []
@@ -32,6 +32,8 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
     isRainy = False
     # 데이터 추출
     for hour, info in currWeather.items():
+        if int(hour) < int(currentHour+'00'):
+            continue
         hours.append(str(hour)[:-2])
         if info['1시간강수량'] == '강수없음':
             precipitation.append(0.0)
@@ -40,9 +42,21 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
             isRainy = True
         precipitationRate.append(info['강수확률'])
         temperatures.append(info['1시간기온'])
+        if hour == '2300':
+            break
+    today = datetime.date.today()
+    todayDate = today.strftime('%Y%m%d')
+    todayDate = todayDate.replace('0', '𝟶').replace('1', '𝟷').replace('2', '𝟸').replace('3', '𝟹')\
+        .replace('4', '𝟺').replace('5', '𝟻').replace('6', '𝟼').replace('7', '𝟽').replace('8', '𝟾').replace('9', '𝟿')
+    currTime = now.strftime("%H:%M")
+    currTime = currTime.replace('0', '𝟶').replace('1', '𝟷').replace('2', '𝟸').replace('3', '𝟹')\
+        .replace('4', '𝟺').replace('5', '𝟻').replace('6', '𝟼').replace('7', '𝟽').replace('8', '𝟾').replace('9', '𝟿')
 
-    text = "── ❝ 𝐒𝐮𝐩𝐩𝐥𝐢𝐞𝐬 𝐨𝐟 𝐓𝐨𝐝𝐚𝐲 ❞ ──\n" \
-           "☂️: "
+
+    text = "── ❝ 𝐒𝐮𝐩𝐩𝐥𝐢𝐞𝐬 𝐨𝐟 𝐓𝐨𝐝𝐚𝐲 ❞ ──\n"
+    text += "𝙳𝚊𝚝𝚎 · "+todayDate+"\n"
+    text += "𝚃𝚒𝚖𝚎 · "+currTime+"\n"
+    text += "☂️: "
     if isRainy:
         text += "O    "
     else:

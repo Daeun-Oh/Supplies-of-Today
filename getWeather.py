@@ -91,9 +91,21 @@ def getWeather(ix, iy, t, rows):
     today = datetime.date.today()
     now = datetime.datetime.now()
     baseData = today.strftime('%Y%m%d')
+
+    ##
+    times = ['02', '05', '08', '11', '14', '17', '20', '23']
+    now = datetime.datetime.now()
+    currentHour = now.hour
+    for i in range(len(times)):
+        if int(times[i]) > int(currentHour):
+            currentHour = times[i - 1]
+            break
+    baseTime = currentHour+'00'
+    ##
+
     if rows == '290':
         baseData = str(int(baseData)-1)
-    baseTime = t
+    #baseTime = t
     #baseTime = now.strftime('%H')
     #if int(baseTime) == 0:
     #    baseTime = '23'
@@ -124,6 +136,7 @@ def getWeather(ix, iy, t, rows):
 
     # JSON 데이터를 파싱하여 딕셔너리로 변환
     data = json.loads(decode_data)
+    print(data)
 
     # 데이터 가공
     forcast = {}
