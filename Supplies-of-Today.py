@@ -1,5 +1,6 @@
 from tkinter import *
-from tkinter import font, Canvas
+from tkinter import font, Canvas, ttk
+import pandas as pd
 from getMap import *
 from getLocation import *
 from getWeather import getWeather
@@ -27,6 +28,8 @@ class ProjectSoT:
         self.frame1 = Frame(self.window, bg = '#FFCC99', width=1200, height=500)    # 지도 띄우는 창
         self.frame2 = None    # 그래프 띄우는 창
 
+        self.bookmarks = []
+
         # frame1에서 쓰이는 변수
         self.locationAddr = {}
         self.locationCoor = {"lat": str(location_data['geoplugin_latitude']),
@@ -43,47 +46,100 @@ class ProjectSoT:
 
         self.InitFrame1()
 
+    def firstCombobox_selected(self, event):
+        selectedValue = self.firstCombobox.get()
+        self.entryText[0] = selectedValue
+        self.secondCombobox['values'] = []
+        self.thirdCombobox['values'] = []
+        filteredData = self.df[self.df['1단계'] == selectedValue]
+        self.secondCombobox['values'] = filteredData['2단계'].drop_duplicates().tolist()
+
+    def secondCombobox_selected(self, event):
+        selectedValue = self.secondCombobox.get()
+        self.entryText[1] = selectedValue
+        filteredData = self.df[(self.df['1단계'] == self.entryText[0]) & (self.df['2단계'] == selectedValue)]
+        self.thirdCombobox['values'] = filteredData['3단계'].tolist()
+
+    def thirdCombobox_selected(self, event):
+        self.entryText[2] = self.thirdCombobox.get()
+        self.entry.delete(0, tk.END)
+        self.entry.insert(0,self.entryText)
+
     def InitFrame1(self):
         print("프레임1 입장")
         print("현재 좌표:", self.locationCoor)
         self.frame1.place(x=0, y=0, width=1200, height=500)
 
+        self.frame1.update()  # GUI 갱신
+
         self.leftFrame1 = Frame(self.frame1, bg="#FFCC99")
         self.leftFrame1.place(x=0, y=0, width=400, height=500)
 
-        self.rightFrame1 = Frame(self.frame1, bg='yellow')
+        self.rightFrame1 = Frame(self.frame1, bg='gray')
         self.rightFrame1.place(x=400, y=0, width=800, height=500)
-
-        setup(self.rightFrame1)
 
         self.SearchFont = font.Font(size=15, family='Dovemayo_gothic')
         self.ButtonFont = font.Font(size=11, family='Dovemayo_gothic')
-        self.TimeFont = font.Font(size=22, family = 'Dovemayo_gothic')
+        self.TimeFont = font.Font(size=22, family='Dovemayo_gothic')
 
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
 
+        ### 1. 시간 ###
+        self.date_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
+        self.date_label.pack()
+        self.time_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
+        self.time_label.pack()
+        self.update_datetime()
+        # 간격띄우기
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
-        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
-        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
-        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
-        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
-        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+
+        ### 2. 검색창, 버튼 생성 ###
 
         self.label = Label(self.leftFrame1, text="주소 검색창", font=self.SearchFont, bg='#FFCC99')
         self.entry = Entry(self.leftFrame1, font=self.SearchFont)
         self.label.pack()
         self.entry.pack()
 
-        Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont, command=self.moveToFrame2).pack()
-        Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).pack()
+        Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont,
+               command=self.moveToFrame2).pack()  # 프레임 전환 버튼 (날씨정보)
+        Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).pack()  # 지도 보기 버튼
+        Button(self.leftFrame1, text="즐찾", font=self.ButtonFont, command=self.bookmarking).pack()  # 즐겨찾기 버튼
 
         # 간격띄우기
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
 
-        self.date_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
-        self.date_label.pack()
-        self.time_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
-        self.time_label.pack()
-        self.update_datetime()
+        ### 3. 엑셀 불러와서 콤보 박스 생성 ###
+
+        # 데이터 불러오기 버튼 생성
+        # self.load_button = Button(self.leftFrame1, text="데이터 불러오기", command=self.loadData)
+        # self.load_button.pack()
+        self.df = pd.read_excel('location_data.xlsx')
+        self.firstCombobox = ttk.Combobox(self.leftFrame1,
+                                          values=['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시',
+                                                  '세종특별자치시', '경기도', '강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도',
+                                                  '경상남도', '제주특별자치도'])
+        self.entryText = ["","",""]
+
+        # 첫 번째 콤보박스 생성
+        self.firstCombobox.pack()
+        self.firstCombobox.bind("<<ComboboxSelected>>", self.firstCombobox_selected)
+
+        # 두 번째 콤보박스 생성
+        self.secondCombobox = ttk.Combobox(self.leftFrame1, state='readonly')
+        self.secondCombobox.pack()
+        self.secondCombobox.bind("<<ComboboxSelected>>", self.secondCombobox_selected)
+
+        # 세 번째 콤보박스 생성
+        self.thirdCombobox = ttk.Combobox(self.leftFrame1, state='readonly')
+        self.thirdCombobox.pack()
+        self.thirdCombobox.bind("<<ComboboxSelected>>", self.thirdCombobox_selected)
+
+        ###########################
+
+        setup(self.rightFrame1)     # 지도 띄우기
 
     def update_datetime(self):
         current_datetime = datetime.datetime.now()
@@ -107,8 +163,12 @@ class ProjectSoT:
 
     def reloadMap(self):
         self.saveLocation()
-        reloadMap([float(self.locationCoor['lat']), self.locationCoor["lng"]])
+        reloadMap([float(self.locationCoor['lat']), self.locationCoor["lng"]], self.bookmarks)
 
+    def bookmarking(self):
+        self.saveLocation()
+        self.bookmarks.append([self.locationCoor['lat'], self.locationCoor['lng']])
+        reloadMap([float(self.locationCoor['lat']), self.locationCoor["lng"]], self.bookmarks)
 
     def InitFrame2(self):
         print("프레임2 입장")
@@ -366,7 +426,7 @@ class ProjectSoT:
         self.InitFrame2()
 
     def moveToFrame1(self):
-        self.saveLocation()
+        #self.saveLocation()
         self.frame2.place_forget()  # owindow 최소화
         self.frame1.pack(fill="both", expand=True)   # swindow 표시
 
