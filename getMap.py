@@ -48,9 +48,33 @@ def showMap(frame):
     browser = cef.CreateBrowserSync(window_info, url='file:///map.html')
     cef.MessageLoop()
 
-def reloadMap(loc):
+def reloadMap(loc, bookmarks):
+    print(bookmarks)
+    text = ""
+    addr = geocoding_reverse(str(loc[0]) + ", " + str(loc[1]))
+    addr = str(addr)
+    addr = addr.split(", ")
+    msgAddr = [addr[i] for i in range(-1, -6, -2)]
+    for l in msgAddr:
+        text += l + " "
+    text = text[:-2]
+
     m = folium.Map(location=loc, zoom_start=13)
-    folium.Marker(loc, popup='서울대').add_to(m)
+    folium.Marker(loc, popup=text).add_to(m)
+
+    for l in bookmarks:
+        # 주소
+        text = ""
+        addr = geocoding_reverse(str(l[0]) + ", " + str(l[1]))
+        addr = str(addr)
+        addr = addr.split(", ")
+        msgAddr = [addr[i] for i in range(-1, -6, -2)]
+        for lm in msgAddr:
+            text += lm + " "
+        text = text[:-1]
+        # 마킹
+        folium.Marker(l, popup=text, icon=folium.Icon(color='orange', icon='star')).add_to(m)
+
     m.save('map.html')
     browser.Reload()
 # WebView 실행 함수 호출

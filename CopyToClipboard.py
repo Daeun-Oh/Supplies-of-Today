@@ -22,7 +22,7 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
         if int(times[i]) > int(currentHour):
             currentHour = times[i-1]
             break
-    currWeather = getWeather(ix, iy, currentHour+'00', '290')    # 97
+    currWeather = getWeather(ix, iy, str(currentHour)+'00', '290')    # 97
     print(currWeather)
 
     hours = []
@@ -32,7 +32,7 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
     isRainy = False
     # 데이터 추출
     for hour, info in currWeather.items():
-        if int(hour) < int(currentHour+'00'):
+        if int(hour) < int(str(currentHour)+'00'):
             continue
         hours.append(str(hour)[:-2])
         if info['1시간강수량'] == '강수없음':

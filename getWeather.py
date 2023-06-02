@@ -100,7 +100,7 @@ def getWeather(ix, iy, t, rows):
         if int(times[i]) > int(currentHour):
             currentHour = times[i - 1]
             break
-    baseTime = currentHour+'00'
+    baseTime = str(currentHour)+'00'
     ##
 
     if rows == '290':
