@@ -15,10 +15,13 @@ import urllib.request
 import numpy as np
 import datetime
 import telepot
-#from teller import *
+#from teller import getlocationfromentry
 from bs4 import BeautifulSoup
 import webbrowser
 #from teller import replySupplyData
+import GetLocationFromEntry
+import requests
+import json
 
 
 # 위치 정보 가져오기
@@ -294,6 +297,11 @@ class ProjectSoT:
 
         def button3_clicked():
             webbrowser.open('https://t.me/todaysupplies_bot')
+            data = {
+                "lat": str(self.locationCoor2['lat']),
+                "lng": str(self.locationCoor2['lng'])
+            }
+            response = requests.post(data=json.dumps(data))
 
         self.button3 = Button(self.leftFrame2, bg='white', image=photoT, command=button3_clicked)
         self.button3.place(x=buttonX, y=buttonY)

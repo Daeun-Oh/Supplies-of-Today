@@ -20,9 +20,13 @@ from getMap import *
 from getLocation import *
 from getWeather import getWeather
 from getFineDust import getNowAirPollution
+import GetLocationFromEntry
+from flask import Flask, request
+
 
 import noti
 
+#locationCoor2 = request.get_json()
 location_data = get_currLocation()
 locationCoor = {"lat": str(location_data['geoplugin_latitude']), "lng": str(location_data['geoplugin_longitude'])} #현재 위치정보만을 확인. 검색창에 입력한 위치정보는 확인불가.
 

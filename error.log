@@ -8,3 +8,13 @@
     self.tk.mainloop(n)
 KeyboardInterrupt
 
+
+[2023-06-03 20:53:30] Traceback (most recent call last):
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 452, in <module>
+    project = ProjectSoT()
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 449, in run
+    def run(self):
+  File "C:\python3.9\lib\tkinter\__init__.py", line 1429, in mainloop
+    self.tk.mainloop(n)
+KeyboardInterrupt
+
