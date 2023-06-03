@@ -85,6 +85,8 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
 
     print(text)
     pc.copy(text)
+
+    return text
     # a1 = "ᴠᴏʟᴜᴍᴇ : ▮▮▮▮▮▮▯▯▯\n" \
     #     "i'm daeun oh\n" \
     #     "are you happy?\n" \

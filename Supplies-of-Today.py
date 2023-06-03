@@ -14,6 +14,11 @@ import matplotlib.font_manager as fm
 import urllib.request
 import numpy as np
 import datetime
+import telepot
+#from teller import *
+from bs4 import BeautifulSoup
+import webbrowser
+#from teller import replySupplyData
 
 
 # 위치 정보 가져오기
@@ -106,7 +111,7 @@ class ProjectSoT:
         Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont,
                command=self.moveToFrame2).pack()  # 프레임 전환 버튼 (날씨정보)
         Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).pack()  # 지도 보기 버튼
-        Button(self.leftFrame1, text="즐찾", font=self.ButtonFont, command=self.bookmarking).pack()  # 즐겨찾기 버튼
+        Button(self.leftFrame1, text="  즐찾  ", font=self.ButtonFont, command=self.bookmarking).pack()  # 즐겨찾기 버튼
 
         # 간격띄우기
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
@@ -287,7 +292,10 @@ class ProjectSoT:
 
         photoT = ImageTk.PhotoImage(imageT)
 
-        self.button3 = Button(self.leftFrame2, bg='white', image=photoT)
+        def button3_clicked():
+            webbrowser.open('https://t.me/todaysupplies_bot')
+
+        self.button3 = Button(self.leftFrame2, bg='white', image=photoT, command=button3_clicked)
         self.button3.place(x=buttonX, y=buttonY)
         self.button3.image = photoT
 
