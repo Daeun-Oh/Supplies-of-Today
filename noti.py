@@ -13,7 +13,7 @@ from datetime import date, datetime, timedelta
 import traceback
 
 key = 'sea100UMmw23Xycs33F1EQnumONR%2F9ElxBLzkilU9Yr1oT4TrCot8Y2p0jyuJP72x9rG9D8CN5yuEs6AS2sAiw%3D%3D'
-TOKEN = '5899396419:AAGluejLL-6UPTEiQ2zPc0GFAzd4ozuObQg'
+TOKEN = '텔레그램 아이디 넣어놨는데 가리라구 해서 이렇게 적어놨오'
 MAX_MSG_LENGTH = 300
 baseurl = 'http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade?ServiceKey='+key
 bot = telepot.Bot(TOKEN)
