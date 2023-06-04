@@ -22,6 +22,7 @@ import webbrowser
 import GetLocationFromEntry
 import requests
 import json
+from teller import getInfo
 
 
 # 위치 정보 가져오기
@@ -295,15 +296,7 @@ class ProjectSoT:
 
         photoT = ImageTk.PhotoImage(imageT)
 
-        def button3_clicked():
-            webbrowser.open('https://t.me/todaysupplies_bot')
-            data = {
-                "lat": str(self.locationCoor2['lat']),
-                "lng": str(self.locationCoor2['lng'])
-            }
-            response = requests.post(data=json.dumps(data))
-
-        self.button3 = Button(self.leftFrame2, bg='white', image=photoT, command=button3_clicked)
+        self.button3 = Button(self.leftFrame2, bg='white', image=photoT, command=lambda : self.button3_clicked(msg2_5, msg10))
         self.button3.place(x=buttonX, y=buttonY)
         self.button3.image = photoT
 
@@ -373,6 +366,10 @@ class ProjectSoT:
         canvas2 = FigureCanvasTkAgg(fig2, master=self.graph2)
         canvas2.draw()
         canvas2.get_tk_widget().pack(side='left')
+
+    def button3_clicked(self, msg2_5, msg10):
+        webbrowser.open('https://t.me/todaysupplies_bot')
+        getInfo(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4), msg2_5, msg10)
 
     def fineDust(self):
         pm2_5, pm10 = getNowAirPollution(self.locationCoor['lat'], self.locationCoor['lng'])
