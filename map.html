@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_ac8db155d9fea8e97e597ec815b73b79 {
+                #map_c191d1a0b780b53d5ab06238acd1af71 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_ac8db155d9fea8e97e597ec815b73b79" ></div>
+            <div class="folium-map" id="map_c191d1a0b780b53d5ab06238acd1af71" ></div>
         
 </body>
 <script>
     
     
-            var map_ac8db155d9fea8e97e597ec815b73b79 = L.map(
-                "map_ac8db155d9fea8e97e597ec815b73b79",
+            var map_c191d1a0b780b53d5ab06238acd1af71 = L.map(
+                "map_c191d1a0b780b53d5ab06238acd1af71",
                 {
-                    center: [37.5488, 126.6578],
+                    center: [37.4782, 126.9518],
                     crs: L.CRS.EPSG3857,
-                    zoom: 15,
+                    zoom: 13,
                     zoomControl: true,
                     preferCanvas: false,
                 }
@@ -60,28 +60,55 @@
 
         
     
-            var tile_layer_128ac28f2d529de2a8706f4408f0e529 = L.tileLayer(
+            var tile_layer_de62408df88270bc630c271369726099 = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
-            ).addTo(map_ac8db155d9fea8e97e597ec815b73b79);
+            ).addTo(map_c191d1a0b780b53d5ab06238acd1af71);
         
     
-            var marker_24a676814ceee151a70f188f7b0499c6 = L.marker(
-                [37.5488, 126.6578],
+            var marker_8de98dae963652fe0ad4cf3ad93b09b1 = L.marker(
+                [37.4782, 126.9518],
                 {}
-            ).addTo(map_ac8db155d9fea8e97e597ec815b73b79);
+            ).addTo(map_c191d1a0b780b53d5ab06238acd1af71);
         
     
-        var popup_f961b0ec274994799de1fa06056af38f = L.popup({"maxWidth": "100%"});
+        var popup_64683b085052da7c38ef0486ed89b91e = L.popup({"maxWidth": "100%"});
 
         
             
-                var html_b88afd90aa53f7a8c1c6ce401ef86efd = $(`<div id="html_b88afd90aa53f7a8c1c6ce401ef86efd" style="width: 100.0%; height: 100.0%;">현재 위치</div>`)[0];
-                popup_f961b0ec274994799de1fa06056af38f.setContent(html_b88afd90aa53f7a8c1c6ce401ef86efd);
+                var html_afe2b0732cb0219e6ae3eaa86de10f06 = $(`<div id="html_afe2b0732cb0219e6ae3eaa86de10f06" style="width: 100.0%; height: 100.0%;">대한민국 서울 청룡</div>`)[0];
+                popup_64683b085052da7c38ef0486ed89b91e.setContent(html_afe2b0732cb0219e6ae3eaa86de10f06);
             
         
 
-        marker_24a676814ceee151a70f188f7b0499c6.bindPopup(popup_f961b0ec274994799de1fa06056af38f)
+        marker_8de98dae963652fe0ad4cf3ad93b09b1.bindPopup(popup_64683b085052da7c38ef0486ed89b91e)
+        ;
+
+        
+    
+    
+            var marker_93a0dbf4ae7a1ee1d29c8f30f36ef925 = L.marker(
+                [37.4782, 126.9518],
+                {}
+            ).addTo(map_c191d1a0b780b53d5ab06238acd1af71);
+        
+    
+            var icon_677ba91272c89c3e1ee54ee6dda0daee = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_93a0dbf4ae7a1ee1d29c8f30f36ef925.setIcon(icon_677ba91272c89c3e1ee54ee6dda0daee);
+        
+    
+        var popup_e238e4d6fa1dedfc1c39d1e6804b80b5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_128100c6ee2b91d4f6d7df889de75f98 = $(`<div id="html_128100c6ee2b91d4f6d7df889de75f98" style="width: 100.0%; height: 100.0%;">대한민국 서울 청룡동</div>`)[0];
+                popup_e238e4d6fa1dedfc1c39d1e6804b80b5.setContent(html_128100c6ee2b91d4f6d7df889de75f98);
+            
+        
+
+        marker_93a0dbf4ae7a1ee1d29c8f30f36ef925.bindPopup(popup_e238e4d6fa1dedfc1c39d1e6804b80b5)
         ;
 
         

@@ -18,3 +18,23 @@ KeyboardInterrupt
     self.tk.mainloop(n)
 KeyboardInterrupt
 
+
+[2023-06-05 16:16:52] Traceback (most recent call last):
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 454, in <module>
+    project.run()
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 451, in run
+    self.window.mainloop()
+  File "C:\python3.9\lib\tkinter\__init__.py", line 1429, in mainloop
+    self.tk.mainloop(n)
+KeyboardInterrupt
+
+
+[2023-06-05 17:19:15] Traceback (most recent call last):
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 450, in <module>
+    project.run()
+  File "C:\Users\ehtlf\OneDrive\바탕 화면\오늘의준비물\Supplies-of-Today\Supplies-of-Today.py", line 447, in run
+    self.window.mainloop()
+  File "C:\python3.9\lib\tkinter\__init__.py", line 1429, in mainloop
+    self.tk.mainloop(n)
+KeyboardInterrupt
+

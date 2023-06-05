@@ -22,34 +22,14 @@ from getWeather import getWeather
 from getFineDust import getNowAirPollution
 import GetLocationFromEntry
 from flask import Flask, request
+import pyperclip as pc
+import datetime
+from getWeather import getWeather
+from getFineDust import getNowAirPollution
+from getLocation import geocoding_reverse
 
 
 import noti
-
-#locationCoor2 = request.get_json()
-# location_data = get_currLocation()
-# locationCoor = {"lat": str(location_data['geoplugin_latitude']), "lng": str(location_data['geoplugin_longitude'])} #현재 위치정보만을 확인. 검색창에 입력한 위치정보는 확인불가.
-#
-# pm2_5, pm10 = getNowAirPollution(locationCoor['lat'], locationCoor['lng'])
-# pm2_5, pm10 = float(pm2_5), float(pm10)
-# print(pm2_5, pm10)
-# if pm2_5 <= 15.0:
-#     msg2_5 = "좋음"
-# elif pm2_5 <= 35.0:
-#     msg2_5 = "보통"
-# elif pm2_5 <= 75.0:
-#     msg2_5 = "나쁨"
-# else:
-#     msg2_5 = "매우나쁨"
-#
-# if pm10 <= 30.0:
-#     msg10 = "좋음"
-# elif pm10 <= 80.0:
-#     msg10 = "보통"
-# elif pm10 <= 150.0:
-#     msg10 = "나쁨"
-# else:
-#     msg10 = "매우나쁨"
 
 t_lat, t_lng, t_msg2_5, t_msg10 = 0.0, 0.0, "", ""
 def getInfo(lat, lng, msg2_5, msg10):
@@ -57,7 +37,109 @@ def getInfo(lat, lng, msg2_5, msg10):
     t_lat, t_lng, t_msg2_5, t_msg10 = lat, lng, msg2_5, msg10
     telepot_run()
 
+def chatbot(ix, iy, msg2_5, msg10, a):
+    print("실행합니다")
+    pm2_5, pm10 = getNowAirPollution(ix, iy)
+    pm2_5, pm10 = float(pm2_5), float(pm10)
+    addr = geocoding_reverse(str(ix) + ", " + str(iy))
+    print(addr)
+    # print(type(addr))
+    addr = str(addr)
+    addr = addr.split(", ")
+    msgAddr = [addr[i] for i in range(-1, -6, -2)]
+    print(msgAddr)
+
+    times = ['02', '05', '08', '11', '14', '17', '20', '23']
+    now = datetime.datetime.now()
+    currentHour = now.hour
+    for i in range(len(times)):
+        if int(times[i]) > int(currentHour):
+            currentHour = times[i - 1]
+            break
+    currWeather = getWeather(ix, iy, str(currentHour) + '00', '290')  # 97
+    print(currWeather)
+
+    hours = []
+    precipitation = []
+    temperatures = []
+    precipitationRate = []
+    isRainy = False
+    # 데이터 추출
+    for hour, info in currWeather.items():
+        if int(hour) < int(str(currentHour) + '00'):
+            continue
+        hours.append(str(hour)[:-2])
+        if info['1시간강수량'] == '강수없음':
+            precipitation.append(0.0)
+        else:
+            precipitation.append(float(info['1시간강수량'][:-2]))
+            isRainy = True
+        precipitationRate.append(info['강수확률'])
+        temperatures.append(info['1시간기온'])
+        if hour == '2300':
+            break
+    today = datetime.date.today()
+    todayDate = today.strftime('%Y%m%d')
+    todayDate = todayDate.replace('0', '𝟶').replace('1', '𝟷').replace('2', '𝟸').replace('3', '𝟹') \
+        .replace('4', '𝟺').replace('5', '𝟻').replace('6', '𝟼').replace('7', '𝟽').replace('8', '𝟾').replace('9', '𝟿')
+    currTime = now.strftime("%H:%M")
+    currTime = currTime.replace('0', '𝟶').replace('1', '𝟷').replace('2', '𝟸').replace('3', '𝟹') \
+        .replace('4', '𝟺').replace('5', '𝟻').replace('6', '𝟼').replace('7', '𝟽').replace('8', '𝟾').replace('9', '𝟿')
+
+    if a==1:
+        text = "위치: "
+        for l in msgAddr:
+            text += l + ", "
+        text = text[:-2] + "\n"
+
+        text += "☂️: "
+        if isRainy:
+            text += "O    "
+        else:
+            text += "X    "
+        text += "😷: "
+        if msg2_5 == "나쁨" or msg2_5 == "매우나쁨" or msg10 == "나쁨" or msg10 == "매우나쁨":
+            text += "O\n\n"
+        else:
+            text += "X\n\n"
+        print(text)
+        return text
+
+    elif a==2: #날씨
+        text = "위치: "
+        for l in msgAddr:
+            text += l + ", "
+        text = text[:-2] + "\n"
+
+        text += "현재 기온: " + str(temperatures[0]) + " ℃\n"
+
+        text += "강수 예상 시간: "
+        if isRainy:
+            for i in range(len(hours)):
+                if precipitation[i] != 0.0:
+                    text += hours[i] + "시, "
+            text = text[:-2]
+        else:
+            text += "X"
+
+        print(text)
+        return text
+
+    elif a==3: #미세먼지
+        text = "위치: "
+        for l in msgAddr:
+            text += l + ", "
+        text = text[:-2] + "\n"
+
+        text += "초미세먼지: " + str(pm2_5) + " ㎍/m³ (" + msg2_5 + ")\n"
+        text += "미세먼지: " + str(pm10) + " ㎍/m³ (" + msg10 + ")\n"
+
+        print(text)
+        return text
+
+
 def handle(msg):
+    #telepot_run()
     global t_lat
 
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -76,15 +158,15 @@ def handle(msg):
         noti.sendMessage(chat_id, output_text)
 
     elif text.startswith('준비물'):
-        output_text = copyToClipboard(t_lat, t_lng, t_msg2_5, t_msg10)
+        output_text = chatbot(t_lat, t_lng, t_msg2_5, t_msg10, 1)
         noti.sendMessage(chat_id, output_text)
 
     elif text.startswith('날씨'):
-        output_text = copyToClipboard(t_lat, t_lng, t_msg2_5, t_msg10)
+        output_text = chatbot(t_lat, t_lng, t_msg2_5, t_msg10, 2)
         noti.sendMessage(chat_id, output_text)
 
     elif text.startswith('미세먼지'):
-        output_text = copyToClipboard(t_lat, t_lng, t_msg2_5, t_msg10)
+        output_text = chatbot(t_lat, t_lng, t_msg2_5, t_msg10, 3)
         noti.sendMessage(chat_id, output_text)
 
     else:
@@ -94,15 +176,14 @@ def telepot_run():
     today = date.today()
     current_month = today.strftime('%Y%m')
 
-    print( '[',today,']received token :', noti.TOKEN )
-
+    print('[', today, '] received token:', noti.TOKEN)
 
     bot = telepot.Bot(noti.TOKEN)
-    pprint( bot.getMe() )
+    pprint(bot.getMe())
 
     bot.message_loop(handle)
 
     print('Listening...')
 
-    while 1:
-      time.sleep(10)
+    while True:
+        time.sleep(10)

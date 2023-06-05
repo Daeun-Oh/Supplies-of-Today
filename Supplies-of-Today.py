@@ -370,6 +370,8 @@ class ProjectSoT:
     def button3_clicked(self, msg2_5, msg10):
         webbrowser.open('https://t.me/todaysupplies_bot')
         getInfo(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4), msg2_5, msg10)
+        t = threading.Thread(target=telepot)
+        t.start()
 
     def fineDust(self):
         pm2_5, pm10 = getNowAirPollution(self.locationCoor['lat'], self.locationCoor['lng'])
