@@ -1,6 +1,3 @@
-#프레임1- 검색
-#프레임2- 공유버튼말고 .... 흠 ....
-
 import tkinter as tk
 from tkinter import ttk
 from tkinter import Label

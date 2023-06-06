@@ -15,13 +15,8 @@ import urllib.request
 import numpy as np
 import datetime
 import telepot
-#from teller import getlocationfromentry
 from bs4 import BeautifulSoup
 import webbrowser
-#from teller import replySupplyData
-import GetLocationFromEntry
-import requests
-import json
 from teller import getInfo
 
 
@@ -428,6 +423,7 @@ class ProjectSoT:
         label.pack()
 
     def moveToFrame2(self):
+        self.saveLocation()
         self.frame1.pack_forget()  # frame1 숨기기
         if self.frame2 is not None:
             self.hours = []  # 읽어온 시간

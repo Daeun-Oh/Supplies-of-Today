@@ -1,10 +1,3 @@
-#지도가 무한루프라 메인 윈도우창의 이벤트 루프가 시작되지 않음 (근데 클릭은 됨)
-#chat gpt는 threading 모듈을 통해
-#대안1: Tkiner 이벤트 루프는 메인 스레드에서 실행하고,
-#웹뷰는 별도의 스레드에서 실행하여 두 가지를 동시에 작동시키라고 함.
-#대안2: entry는 없애고 지역 선택으로 바꾸기
-#일단 entry 살리는 거 시도해보고, 대안을 적용시키는 걸로...
-
 from getLocation import *
 import tkinter as tk
 import webview

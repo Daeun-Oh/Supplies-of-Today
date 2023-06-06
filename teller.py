@@ -1,7 +1,3 @@
-#해야할것
-#두번째 창 위치 연동
-#입력한 키워드별 정보 출력
-
 #!/usr/bin/python
 # coding=utf-8
 
@@ -14,18 +10,10 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import re
 from datetime import date, datetime, timedelta
-import traceback
 from CopyToClipboard import copyToClipboard
-from getMap import *
-from getLocation import *
 from getWeather import getWeather
 from getFineDust import getNowAirPollution
-import GetLocationFromEntry
-from flask import Flask, request
-import pyperclip as pc
 import datetime
-from getWeather import getWeather
-from getFineDust import getNowAirPollution
 from getLocation import geocoding_reverse
 
 
@@ -43,7 +31,6 @@ def chatbot(ix, iy, msg2_5, msg10, a):
     pm2_5, pm10 = float(pm2_5), float(pm10)
     addr = geocoding_reverse(str(ix) + ", " + str(iy))
     print(addr)
-    # print(type(addr))
     addr = str(addr)
     addr = addr.split(", ")
     msgAddr = [addr[i] for i in range(-1, -6, -2)]
@@ -102,6 +89,7 @@ def chatbot(ix, iy, msg2_5, msg10, a):
             text += "O\n\n"
         else:
             text += "X\n\n"
+
         print(text)
         return text
 
@@ -139,7 +127,6 @@ def chatbot(ix, iy, msg2_5, msg10, a):
 
 
 def handle(msg):
-    #telepot_run()
     global t_lat
 
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -185,5 +172,5 @@ def telepot_run():
 
     print('Listening...')
 
-    while True:
-        time.sleep(10)
+    # while True:
+    #     time.sleep(10)
