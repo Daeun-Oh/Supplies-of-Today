@@ -220,7 +220,9 @@ class ProjectSoT:
         print("하늘: "+self.sky)
 
         ## 날씨 + 미세먼지 ##
-        if int(self.sky) < 6:
+        if self.precipitation[0] != 0.0:
+            weatherImage = Image.open("rainy.png")  # 1시간 이내 강수량 존재
+        elif int(self.sky) < 6:
             weatherImage = Image.open("sunny.png")  # 맑음
         elif int(self.sky) < 9:
             weatherImage = Image.open("cloudy.png")  # 구름많음
