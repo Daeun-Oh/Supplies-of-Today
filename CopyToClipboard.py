@@ -3,6 +3,8 @@ import datetime
 from getWeather import getWeather
 from getFineDust import getNowAirPollution
 from getLocation import geocoding_reverse
+import comparingkv  # C 확장 모듈
+
 def copyToClipboard(ix, iy, msg2_5, msg10):
     print("실행합니다")
     pm2_5, pm10 = getNowAirPollution(ix, iy)
@@ -35,7 +37,7 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
         if int(hour) < int(str(currentHour)+'00'):
             continue
         hours.append(str(hour)[:-2])
-        if info['1시간강수량'] == '강수없음':
+        if comparingkv.compare_dict_value(info, '1시간강수량', '강수없음'):
             precipitation.append(0.0)
         else:
             precipitation.append(float(info['1시간강수량'][:-2]))

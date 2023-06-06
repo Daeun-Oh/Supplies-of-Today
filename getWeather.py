@@ -8,6 +8,7 @@ import xmltodict
 import pandas as pd
 import datetime
 import math
+import comparingkv  # C 확장 모듈
 
 NX = 149            ## X축 격자점 수
 NY = 253            ## Y축 격자점 수
@@ -132,33 +133,35 @@ def getWeather(ix, iy, t, rows):
     response_body = urlopen(request).read() # get bytes data
     #print(response_body)
     decode_data = response_body.decode('utf-8')
-    print(decode_data)
+    #print(decode_data)
 
     # JSON 데이터를 파싱하여 딕셔너리로 변환
     data = json.loads(decode_data)
-    print(data)
+    #print(data)
 
     # 데이터 가공
-    forcast = {}
+
+    forecast = {}
     for i, info in enumerate(data['response']['body']['items']['item']):
         if i >= 0:
-            if info['fcstTime'] not in forcast:
-                forcast[info['fcstTime']] = {}
+            if info['fcstTime'] not in forecast:
+                forecast[info['fcstTime']] = {}
 
-            if info['category']== 'POP':
-                forcast[info['fcstTime']]['강수확률'] = float(info['fcstValue'])
+            if comparingkv.compare_dict_value(info, 'category', 'POP'):
+                forecast[info['fcstTime']]['강수확률'] = float(info['fcstValue'])
                 #print('category:강수확률,', info['category'], 'baseTime:', info['baseTime'], ', fcstTime:', info['fcstTime'], ', fcstValue:', info['fcstValue'])
-            elif info['category']== 'PTY':
-                forcast[info['fcstTime']]['강수형태'] = float(info['fcstValue'])
+            elif comparingkv.compare_dict_value(info, 'category', 'PTY'):
+                forecast[info['fcstTime']]['강수형태'] = float(info['fcstValue'])
                 #print('category:강수형태,', info['category'], 'baseTime:', info['baseTime'], ', fcstTime:', info['fcstTime'], ', fcstValue:', info['fcstValue'])
-            elif info['category']== 'PCP':
-                forcast[info['fcstTime']]['1시간강수량'] = info['fcstValue']
+            elif comparingkv.compare_dict_value(info, 'category', 'PCP'):
+                forecast[info['fcstTime']]['1시간강수량'] = info['fcstValue']
                 #print('category:1시간강수량,', info['category'], 'baseTime:', info['baseTime'], ', fcstTime:', info['fcstTime'], ', fcstValue:', info['fcstValue'])
-            elif info['category'] == 'SKY':
-                forcast[info['fcstTime']]['하늘상태'] = info['fcstValue']   # 0-5: 맑음 / 6-8: 구름많음 / 9-10: 흐림
-            elif info['category']== 'TMP':
-                forcast[info['fcstTime']]['1시간기온'] = float(info['fcstValue'])
+            elif comparingkv.compare_dict_value(info, 'category', 'SKY'):
+                forecast[info['fcstTime']]['하늘상태'] = info['fcstValue']   # 0-5: 맑음 / 6-8: 구름많음 / 9-10: 흐림
+            elif comparingkv.compare_dict_value(info, 'category', 'TMP'):
+                forecast[info['fcstTime']]['1시간기온'] = float(info['fcstValue'])
                 #print('category:1시간기온,', info['category'], 'baseTime:', info['baseTime'], ', fcstTime:', info['fcstTime'], ', fcstValue:', info['fcstValue'])
 
-    print(forcast)
-    return forcast
+    #print(forecast)
+
+    return forecast

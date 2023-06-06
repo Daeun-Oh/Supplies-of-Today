@@ -18,6 +18,7 @@ import telepot
 from bs4 import BeautifulSoup
 import webbrowser
 from teller import getInfo
+import comparingkv  # C 확장 모듈
 
 
 # 위치 정보 가져오기
@@ -79,7 +80,7 @@ class ProjectSoT:
         self.leftFrame1 = Frame(self.frame1, bg="#FFCC99")
         self.leftFrame1.place(x=0, y=0, width=400, height=500)
 
-        self.rightFrame1 = Frame(self.frame1, bg='gray')
+        self.rightFrame1 = Frame(self.frame1, bg='white')
         self.rightFrame1.place(x=400, y=0, width=800, height=500)
 
         self.SearchFont = font.Font(size=15, family='Dovemayo_gothic')
@@ -90,6 +91,7 @@ class ProjectSoT:
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
+
 
         ### 1. 시간 ###
         self.date_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
@@ -205,7 +207,7 @@ class ProjectSoT:
         # 데이터 추출
         for hour, info in weather.items():
             self.hours.append(str(hour)[:-2])
-            if info['1시간강수량'] == '강수없음':
+            if comparingkv.compare_dict_value(info, '1시간강수량', '강수없음'):
                 self.precipitation.append(0.0)
             else:
                 self.precipitation.append(float(info['1시간강수량'][:-2]))
