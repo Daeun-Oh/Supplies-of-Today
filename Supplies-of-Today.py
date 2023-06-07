@@ -397,34 +397,56 @@ class ProjectSoT:
         return msg2_5, msg10
 
     def recommend_outfit(self):
+        self.button1.config(state="disabled")   # 옷차림 버튼 비활성화
+        noticeText = ":⊹*. ̥✧ 𝑵𝑶𝑻𝑰𝑪𝑬 "       # ⋆.*ೃ *: 𖧧
+        noticeText += "현재 기온은 " + str(self.temperatures[0]) + "℃입니다. "
+
         if self.temperatures[0]>=28.0:
-            fashionImage = Image.open("fashion_28도이상.png")
+            noticeText += "민소매, 반팔, 반바지, 원피스 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion-28.png")
         elif (self.temperatures[0]<=27.0) and (self.temperatures[0]>=23.0):
-            fashionImage = Image.open("fashion_27도이하.png")
+            noticeText += "반팔, 얇은 셔츠, 반바지, 면바지 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion27-23.png")
         elif (self.temperatures[0]<=22.0) and (self.temperatures[0]>=20.0):
-            fashionImage = Image.open("fashion_22도이하.png")
+            noticeText += "얇은 가디건, 긴팔, 면바지, 청바지 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion22-20.png")
         elif (self.temperatures[0]<=19.0) and (self.temperatures[0]>=17.0):
-            fashionImage = Image.open("fashion_19도이하.png")
+            noticeText += "얇은 니트, 맨투맨, 가디건, 청바지 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion19-17.png")
         elif (self.temperatures[0]<=16.0) and (self.temperatures[0]>=12.0):
-            fashionImage = Image.open("fashion_16도이하.png")
+            noticeText += "자켓, 가디건, 야샹, 스타킹, 청바지, 면바지 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion16-12.png")
         elif (self.temperatures[0]<=11.0) and (self.temperatures[0]>=9.0):
-            fashionImage = Image.open("fashion_11도이하.png")
+            noticeText += "자켓, 트렌치코트, 야상, 니트, 청바지, 스타킹 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion11-9.png")
         elif (self.temperatures[0]<=8.0) and (self.temperatures[0]>=5.0):
-            fashionImage = Image.open("fashion_8도이하.png")
+            noticeText += "코트, 가죽자켓, 히트텍, 니트, 레깅스 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion8-5.png")
         else:
-            fashionImage = Image.open("fashion_4도이하.png")
+            noticeText += "패딩, 두꺼운 코드, 목도리, 기모제품 등을 추천합니다!"
+            fashionImage = Image.open("fashionImages/fashion4-.png")
+        noticeText += " ⋆.*ೃ *: 𖧧"
 
-        fashionImage = fashionImage.resize((400, 200))  # 이미지 크기 조정
+        label = Label(self.leftFrame2, text=noticeText, font=self.SearchFont)
+        label.place(x=290, y=273)    # 1101, 0
 
-        # 이미지를 Tkinter에서 사용할 수 있는 형식으로 변환
-        self.img_tk = ImageTk.PhotoImage(fashionImage)
+        fashionImage = fashionImage.resize((int(180*0.6), int(68*0.6)))  # 이미지 크기 조정
 
-        # 이미지를 표시할 새로운 창 생성
-        outfit_window = Toplevel(self.window)
-        outfit_window.title("온도에 따른 코디 👗")
+        fashionPhotoImage = ImageTk.PhotoImage(fashionImage)
 
-        label = Label(outfit_window, image=self.img_tk, width=400, height=200)
-        label.pack()
+        self.fashionImage_label = Label(self.leftFrame2, image=fashionPhotoImage)
+        self.fashionImage_label.image = fashionPhotoImage
+        self.fashionImage_label.place(x=48, y=260)
+        label.after(10, self.moveText, label)
+
+    def moveText(self, label):
+        rSide = label.winfo_x() + label.winfo_width()
+        if rSide > 0:
+            label.place(x=label.winfo_x()-5,y=273)
+            # self.fashionImage_label.place(x=rSide, y=0)
+            label.after(20, self.moveText, label)
+        else:
+            self.button1.config(state="normal")     # 옷차림 버튼 다시 활성화
 
     def moveToFrame2(self):
         self.saveLocation()
