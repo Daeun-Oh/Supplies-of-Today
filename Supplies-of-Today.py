@@ -253,7 +253,7 @@ class ProjectSoT:
 
         # 이미지를 Tkinter에서 사용할 수 있는 형식으로 변환
         photo = ImageTk.PhotoImage(weatherImage)
-        label_image = Label(self.leftFrame2, image=photo)
+        label_image = Label(self.leftFrame2, image=photo, borderwidth=0, highlightthickness=0)
         label_image.image = photo
         label_image.place(x=200, y=60, anchor="n")
 
@@ -264,11 +264,11 @@ class ProjectSoT:
         # 코디 추천 버튼
 
         imageC = Image.open("clothes.png")  # 이미지 파일
-        imageC = imageC.resize((70, 70))  # 이미지 크기 조정
+        imageC = imageC.resize((65, 65))  # 이미지 크기 조정
 
         photoC = ImageTk.PhotoImage(imageC)
 
-        self.button1 = Button(self.leftFrame2, bg='white', image=photoC, command=self.recommend_outfit)
+        self.button1 = Button(self.leftFrame2, bg='white', image=photoC, width=70, height=70, command=self.recommend_outfit)
         self.button1.place(x=buttonX, y=buttonY)
         self.button1.image = photoC
 
@@ -277,11 +277,11 @@ class ProjectSoT:
         buttonX += 90
 
         imageK = Image.open("clipboard.png")  # 이미지 파일
-        imageK = imageK.resize((70, 70))  # 이미지 크기 조정
+        imageK = imageK.resize((60, 60))  # 이미지 크기 조정
 
         photoK = ImageTk.PhotoImage(imageK)
 
-        self.button2 = Button(self.leftFrame2, bg='white', image=photoK,\
+        self.button2 = Button(self.leftFrame2, bg='white', image=photoK, width=70, height=70,\
                               command=lambda: copyToClipboard(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4), msg2_5, msg10))
         self.button2.place(x=buttonX, y=buttonY)
         self.button2.image = photoK
@@ -427,26 +427,31 @@ class ProjectSoT:
             fashionImage = Image.open("fashionImages/fashion4-.png")
         noticeText += " ⋆.*ೃ *: 𖧧"
 
-        label = Label(self.leftFrame2, text=noticeText, font=self.SearchFont)
-        label.place(x=290, y=273)    # 1101, 0
+        self.noticeCanvas = Canvas(self.frame2, width=1200, height=int(68*0.6), borderwidth=0, highlightthickness=0, bg='#ebb886')
+        self.noticeCanvas.place(x=0, y=0)
+
+        label = Label(self.frame2, text=noticeText, font=self.SearchFont, bg='#ebb886')
+        label.place(x=1199, y=4)    # 1101, 0
 
         fashionImage = fashionImage.resize((int(180*0.6), int(68*0.6)))  # 이미지 크기 조정
 
         fashionPhotoImage = ImageTk.PhotoImage(fashionImage)
 
-        self.fashionImage_label = Label(self.leftFrame2, image=fashionPhotoImage)
+        self.fashionImage_label = Label(self.frame2, image=fashionPhotoImage, borderwidth=0, highlightthickness=0)
         self.fashionImage_label.image = fashionPhotoImage
-        self.fashionImage_label.place(x=48, y=260)
+        self.fashionImage_label.place(x=0, y=0)
         label.after(10, self.moveText, label)
 
     def moveText(self, label):
         rSide = label.winfo_x() + label.winfo_width()
         if rSide > 0:
-            label.place(x=label.winfo_x()-5,y=273)
+            label.place(x=label.winfo_x()-5,y=4)
             # self.fashionImage_label.place(x=rSide, y=0)
-            label.after(20, self.moveText, label)
+            label.after(30, self.moveText, label)
         else:
             self.button1.config(state="normal")     # 옷차림 버튼 다시 활성화
+            self.fashionImage_label.destroy()
+            self.noticeCanvas.destroy()
 
     def moveToFrame2(self):
         self.saveLocation()
