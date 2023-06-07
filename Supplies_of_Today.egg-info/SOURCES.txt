@@ -1,0 +1,5 @@
+setup.py
+Supplies_of_Today.egg-info/PKG-INFO
+Supplies_of_Today.egg-info/SOURCES.txt
+Supplies_of_Today.egg-info/dependency_links.txt
+Supplies_of_Today.egg-info/top_level.txt

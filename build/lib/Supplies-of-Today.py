@@ -110,9 +110,9 @@ class ProjectSoT:
         self.entry.pack()
 
         Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont,
-               command=self.moveToFrame2).place(x=120, y=400)  # 프레임 전환 버튼 (날씨정보)
-        Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).place(x=180, y=400)  # 지도 보기 버튼
-        Button(self.leftFrame1, text="⭐", font=self.ButtonFont, bg="#FFFF99", command=self.bookmarking).place(x=240, y=400)  # 즐겨찾기 버튼
+               command=self.moveToFrame2).pack()  # 프레임 전환 버튼 (날씨정보)
+        Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).pack()  # 지도 보기 버튼
+        Button(self.leftFrame1, text="  즐찾  ", font=self.ButtonFont, command=self.bookmarking).pack()  # 즐겨찾기 버튼
 
         # 간격띄우기
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
@@ -127,29 +127,21 @@ class ProjectSoT:
                                           values=['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시',
                                                   '세종특별자치시', '경기도', '강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도',
                                                   '경상남도', '제주특별자치도'])
-
         self.entryText = ["","",""]
 
         # 첫 번째 콤보박스 생성
         self.firstCombobox.pack()
         self.firstCombobox.bind("<<ComboboxSelected>>", self.firstCombobox_selected)
-        self.firstCombobox.set('시/도')
 
         # 두 번째 콤보박스 생성
         self.secondCombobox = ttk.Combobox(self.leftFrame1, state='readonly')
-        self.secondCombobox['values'] = []
         self.secondCombobox.pack()
         self.secondCombobox.bind("<<ComboboxSelected>>", self.secondCombobox_selected)
-        self.secondCombobox.set('시/구/군')
-
 
         # 세 번째 콤보박스 생성
         self.thirdCombobox = ttk.Combobox(self.leftFrame1, state='readonly')
-        self.thirdCombobox['values'] = []
         self.thirdCombobox.pack()
         self.thirdCombobox.bind("<<ComboboxSelected>>", self.thirdCombobox_selected)
-        self.thirdCombobox.set('동/읍/면/리')
-
 
         ###########################
 

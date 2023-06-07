@@ -16,7 +16,7 @@ def setup(frame):
     current_location = {'lat': location_data['geoplugin_latitude'], 'lng': location_data['geoplugin_longitude']}
 
     # 사용자의 Google Maps API 키
-    api_key = "API_KEY"
+    api_key = "AIzaSyB2d8ZBeA7WoD3v4cbsgihUvC1IbmrrAIU"
 
     # 지도 생성
     m = folium.Map(location=[float(current_location['lat']), float(current_location['lng'])], zoom_start=15)
