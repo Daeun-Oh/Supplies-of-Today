@@ -30,11 +30,6 @@ def chatbot(ix, iy, msg2_5, msg10, a):
     pm2_5, pm10 = getNowAirPollution(ix, iy)
     pm2_5, pm10 = float(pm2_5), float(pm10)
     addr = geocoding_reverse(str(ix) + ", " + str(iy))
-    print(addr)
-    addr = str(addr)
-    addr = addr.split(", ")
-    msgAddr = [addr[i] for i in range(-1, -6, -2)]
-    print(msgAddr)
 
     times = ['02', '05', '08', '11', '14', '17', '20', '23']
     now = datetime.datetime.now()
@@ -74,10 +69,7 @@ def chatbot(ix, iy, msg2_5, msg10, a):
         .replace('4', '𝟺').replace('5', '𝟻').replace('6', '𝟼').replace('7', '𝟽').replace('8', '𝟾').replace('9', '𝟿')
 
     if a==1:
-        text = "위치: "
-        for l in msgAddr:
-            text += l + ", "
-        text = text[:-2] + "\n"
+        text = "위치: "+addr+"\n"
 
         text += "☂️: "
         if isRainy:
@@ -94,10 +86,7 @@ def chatbot(ix, iy, msg2_5, msg10, a):
         return text
 
     elif a==2: #날씨
-        text = "위치: "
-        for l in msgAddr:
-            text += l + ", "
-        text = text[:-2] + "\n"
+        text = "위치: "+addr+"\n"
 
         text += "현재 기온: " + str(temperatures[0]) + " ℃\n"
 
@@ -114,10 +103,7 @@ def chatbot(ix, iy, msg2_5, msg10, a):
         return text
 
     elif a==3: #미세먼지
-        text = "위치: "
-        for l in msgAddr:
-            text += l + ", "
-        text = text[:-2] + "\n"
+        text = "위치: "+addr+"\n"
 
         text += "초미세먼지: " + str(pm2_5) + " ㎍/m³ (" + msg2_5 + ")\n"
         text += "미세먼지: " + str(pm10) + " ㎍/m³ (" + msg10 + ")\n"

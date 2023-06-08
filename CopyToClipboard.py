@@ -10,12 +10,6 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
     pm2_5, pm10 = getNowAirPollution(ix, iy)
     pm2_5, pm10 = float(pm2_5), float(pm10)
     addr = geocoding_reverse(str(ix) + ", " + str(iy))
-    print(addr)
-    #print(type(addr))
-    addr = str(addr)
-    addr = addr.split(", ")
-    msgAddr = [addr[i] for i in range(-1,-6,-2)]
-    print(msgAddr)
 
     times = ['02', '05', '08', '11', '14', '17', '20', '23']
     now = datetime.datetime.now()
@@ -68,10 +62,7 @@ def copyToClipboard(ix, iy, msg2_5, msg10):
         text += "O\n\n"
     else:
         text += "X\n\n"
-    text += "위치: "
-    for l in msgAddr:
-        text += l + ", "
-    text = text[:-2] + "\n"
+    text += "위치: "+addr+"\n"
     text += "초미세먼지: " + str(pm2_5) + " ㎍/m³ (" + msg2_5 + ")\n"
     text += "미세먼지: " + str(pm10) + " ㎍/m³ (" + msg10 + ")\n"
     text += "현재 기온: " + str(temperatures[0]) + " ℃\n"
