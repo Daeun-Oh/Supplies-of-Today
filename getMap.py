@@ -16,7 +16,7 @@ def setup(frame):
     current_location = {'lat': location_data['geoplugin_latitude'], 'lng': location_data['geoplugin_longitude']}
 
     # 사용자의 Google Maps API 키
-    api_key = "AIzaSyB2d8ZBeA7WoD3v4cbsgihUvC1IbmrrAIU"
+    api_key = "API_KEY"
 
     # 지도 생성
     m = folium.Map(location=[float(current_location['lat']), float(current_location['lng'])], zoom_start=15)
@@ -42,31 +42,17 @@ def showMap(frame):
     cef.MessageLoop()
 
 def reloadMap(loc, bookmarks):
-    print(bookmarks)
-    text = ""
-    addr = geocoding_reverse(str(loc[0]) + ", " + str(loc[1]))
-    addr = str(addr)
-    addr = addr.split(", ")
-    msgAddr = [addr[i] for i in range(-1, -6, -2)]
-    for l in msgAddr:
-        text += l + " "
-    text = text[:-2]
+    # print(bookmarks)
+    text = geocoding_reverse(str(loc[0]) + ", " + str(loc[1]))
 
     m = folium.Map(location=loc, zoom_start=13)
     folium.Marker(loc, popup=text).add_to(m)
 
-    for l in bookmarks:
+    for bm in bookmarks:
         # 주소
-        text = ""
-        addr = geocoding_reverse(str(l[0]) + ", " + str(l[1]))
-        addr = str(addr)
-        addr = addr.split(", ")
-        msgAddr = [addr[i] for i in range(-1, -6, -2)]
-        for lm in msgAddr:
-            text += lm + " "
-        text = text[:-1]
+        text = geocoding_reverse(str(bm[0]) + ", " + str(bm[1]))
         # 마킹
-        folium.Marker(l, popup=text, icon=folium.Icon(color='orange', icon='star')).add_to(m)
+        folium.Marker(bm, popup=text, icon=folium.Icon(color='orange', icon='star')).add_to(m)
 
     m.save('map.html')
     browser.Reload()

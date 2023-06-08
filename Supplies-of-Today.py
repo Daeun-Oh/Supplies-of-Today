@@ -36,9 +36,9 @@ class ProjectSoT:
         self.bookmarks = []
 
         # frame1에서 쓰이는 변수
-        self.locationAddr = {}
         self.locationCoor = {"lat": str(location_data['geoplugin_latitude']),
                         "lng": str(location_data['geoplugin_longitude'])}
+        self.locationAddr = geocoding_reverse(str(self.locationCoor['lat']) + ", " + str(self.locationCoor["lng"]))
 
         # frame2에서 쓰이는 변수
         self.hours = []                 # 읽어온 시간
@@ -99,20 +99,21 @@ class ProjectSoT:
         self.time_label = Label(self.leftFrame1, text="", font=self.TimeFont, bg='#FFCC99')
         self.time_label.pack()
         self.update_datetime()
-        # 간격띄우기
-        Label(self.leftFrame1, text="", bg='#FFCC99').pack()
 
         ### 2. 검색창, 버튼 생성 ###
 
-        self.label = Label(self.leftFrame1, text="주소 검색창", font=self.SearchFont, bg='#FFCC99')
+        self.label = Label(self.leftFrame1, text="주소 검색창", font=self.ButtonFont, bg='#FFCC99')
         self.entry = Entry(self.leftFrame1, font=self.SearchFont)
-        self.label.pack()
-        self.entry.pack()
+        self.label.place(x=100, y=215, anchor="w")
+        self.entry.place(x=200, y=240, anchor="center")
+
+        # 붙여넣기 이벤트 바인딩
+        self.entry.bind("<Control-v>", self.handle_paste)
 
         Button(self.leftFrame1, text="  날씨  ", font=self.ButtonFont,
-               command=self.moveToFrame2).place(x=120, y=400)  # 프레임 전환 버튼 (날씨정보)
-        Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).place(x=180, y=400)  # 지도 보기 버튼
-        Button(self.leftFrame1, text="⭐", font=self.ButtonFont, bg="#FFFF99", command=self.bookmarking).place(x=240, y=400)  # 즐겨찾기 버튼
+               command=self.moveToFrame2).place(x=120+5, y=400)  # 프레임 전환 버튼 (날씨정보)
+        Button(self.leftFrame1, text="  지도  ", font=self.ButtonFont, command=self.reloadMap).place(x=180+3, y=400)  # 지도 보기 버튼
+        Button(self.leftFrame1, text="⭐", font=self.ButtonFont, bg="#FFFF99", command=self.bookmarking).place(x=240+3, y=400)  # 즐겨찾기 버튼
 
         # 간격띄우기
         Label(self.leftFrame1, text="", bg='#FFCC99').pack()
@@ -131,14 +132,14 @@ class ProjectSoT:
         self.entryText = ["","",""]
 
         # 첫 번째 콤보박스 생성
-        self.firstCombobox.pack()
+        self.firstCombobox.place(x=200, y=300, anchor="center")
         self.firstCombobox.bind("<<ComboboxSelected>>", self.firstCombobox_selected)
         self.firstCombobox.set('시/도')
 
         # 두 번째 콤보박스 생성
         self.secondCombobox = ttk.Combobox(self.leftFrame1, state='readonly')
         self.secondCombobox['values'] = []
-        self.secondCombobox.pack()
+        self.secondCombobox.place(x=200, y=330, anchor="center")
         self.secondCombobox.bind("<<ComboboxSelected>>", self.secondCombobox_selected)
         self.secondCombobox.set('시/구/군')
 
@@ -146,7 +147,7 @@ class ProjectSoT:
         # 세 번째 콤보박스 생성
         self.thirdCombobox = ttk.Combobox(self.leftFrame1, state='readonly')
         self.thirdCombobox['values'] = []
-        self.thirdCombobox.pack()
+        self.thirdCombobox.place(x=200, y=360, anchor="center")
         self.thirdCombobox.bind("<<ComboboxSelected>>", self.thirdCombobox_selected)
         self.thirdCombobox.set('동/읍/면/리')
 
@@ -172,8 +173,8 @@ class ProjectSoT:
         if str(self.entry.get()) == "":
             print("검색이 안 됨")
         else:
-            self.locationAddr = str(self.entry.get())
-            self.locationCoor = geocoding(self.locationAddr)
+            self.locationCoor = geocoding(str(self.entry.get()))
+            self.locationAddr = geocoding_reverse(str(self.locationCoor['lat']) + ", " + str(self.locationCoor["lng"]))
 
     def reloadMap(self):
         self.saveLocation()
@@ -203,14 +204,6 @@ class ProjectSoT:
 
         print("현재 주소:", self.locationAddr)
         print("현재 좌표:", self.locationCoor)
-
-        #i = 0
-        #for key in list(weather.keys()):
-        #    #print(i, w)
-        #    if i < 1:
-        #        del(weather[key])
-        #    i += 1
-        #print(weather)
 
         # 데이터 추출
         for hour, info in weather.items():
@@ -246,20 +239,27 @@ class ProjectSoT:
         font_size = 15  # 폰트 크기
         font = ImageFont.truetype("Dovemayo_gothic.ttf", font_size)  # 폰트 설정
 
-        # 이미지에 텍스트 그리기
+        # 날씨 이미지 위 텍스트: 초미세먼지
         draw = ImageDraw.Draw(weatherImage)
         text1_bbox = draw.textbbox((0, 0, weatherImage.width, weatherImage.height), text1, font=font)
         text1_width = text1_bbox[2] - text1_bbox[0]
         text1_height = text1_bbox[3] - text1_bbox[1]
         text1_position = ((weatherImage.width - text1_width) // 2, 5)  # 텍스트 위치 조정
         draw.text(text1_position, text1, font=font, fill="black")
+        # 날씨 이미지 위 텍스트: 미세먼지
         text2_bbox = draw.textbbox((0, 0, weatherImage.width, weatherImage.height), text2, font=font)
         text2_width = text2_bbox[2] - text2_bbox[0]
         text2_height = text2_bbox[3] - text2_bbox[1]
         text2_position = ((weatherImage.width - text2_width) // 2, text2_height+10)  # 텍스트 위치 조정
         draw.text(text2_position, text2, font=font, fill="black")
+        # 날씨 이미지 위 텍스트: 위치
+        text3_bbox = draw.textbbox((0, 0, weatherImage.width, weatherImage.height), "「위치: "+self.locationAddr+"」", font=font)
+        text3_width = text3_bbox[2] - text3_bbox[0]
+        text3_height = text3_bbox[3] - text3_bbox[1]
+        text3_position = ((weatherImage.width - text3_width) // 2, weatherImage.height-text3_height-8)  # 텍스트 위치 조정
+        draw.text(text3_position, "「위치: "+self.locationAddr+"」", font=font, fill="black")
 
-        # 이미지를 Tkinter에서 사용할 수 있는 형식으로 변환
+        # 날씨 이미지를 Tkinter에서 사용할 수 있는 형식으로 변환
         photo = ImageTk.PhotoImage(weatherImage)
         label_image = Label(self.leftFrame2, image=photo, borderwidth=0, highlightthickness=0)
         label_image.image = photo
@@ -406,7 +406,7 @@ class ProjectSoT:
 
     def recommend_outfit(self):
         self.button1.config(state="disabled")   # 옷차림 버튼 비활성화
-        noticeText = ":⊹*. ̥✧ 𝑵𝑶𝑻𝑰𝑪𝑬 "       # ⋆.*ೃ *: 𖧧
+        noticeText = ":⊹*. ̥✧ 𝑵𝑶𝑻𝑰𝑪𝑬 "+self.locationAddr+"의 "       # ⋆.*ೃ *:
         noticeText += "현재 기온은 " + str(self.temperatures[0]) + "℃입니다. "
 
         if self.temperatures[0]>=28.0:
@@ -433,13 +433,13 @@ class ProjectSoT:
         else:
             noticeText += "패딩, 두꺼운 코드, 목도리, 기모제품 등을 추천합니다!"
             fashionImage = Image.open("fashionImages/fashion4-.png")
-        noticeText += " ⋆.*ೃ *: 𖧧"
+        noticeText += " ⋆.*ೃ *:"
 
         self.noticeCanvas = Canvas(self.frame2, width=1200, height=int(68*0.6), borderwidth=0, highlightthickness=0, bg='#ebb886')
         self.noticeCanvas.place(x=0, y=0)
 
         label = Label(self.frame2, text=noticeText, font=self.SearchFont, bg='#ebb886')
-        label.place(x=1199, y=4)    # 1101, 0
+        label.place(x=1199, y=4)
 
         fashionImage = fashionImage.resize((int(180*0.6), int(68*0.6)))  # 이미지 크기 조정
 
@@ -479,6 +479,13 @@ class ProjectSoT:
         #self.saveLocation()
         self.frame2.place_forget()  # owindow 최소화
         self.frame1.pack(fill="both", expand=True)   # swindow 표시
+
+    def handle_paste(self, event):
+        if self.entry.selection_present():
+            self.entry.delete(SEL_FIRST, SEL_LAST)
+        textToPaste = self.window.clipboard_get()
+        self.entry.insert(END, textToPaste)
+        return "break"
 
     def run(self):
         self.window.mainloop()
