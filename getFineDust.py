@@ -48,5 +48,29 @@ def getNowAirPollution(pos_lat, pos_lon):
 
     return data['list'][0]['components']['pm2_5'], data['list'][0]['components']['pm10']
 
+def getNowAirPollutionMassage(lat, lng):
+    pm2_5, pm10 = getNowAirPollution(lat, lng)
+    pm2_5, pm10 = float(pm2_5), float(pm10)
+    print(pm2_5, pm10)
+    if pm2_5 <= 15.0:
+        msg2_5 = "좋음"
+    elif pm2_5 <= 35.0:
+        msg2_5 = "보통"
+    elif pm2_5 <= 75.0:
+        msg2_5 = "나쁨"
+    else:
+        msg2_5 = "매우나쁨"
+
+    if pm10 <= 30.0:
+        msg10 = "좋음"
+    elif pm10 <= 80.0:
+        msg10 = "보통"
+    elif pm10 <= 150.0:
+        msg10 = "나쁨"
+    else:
+        msg10 = "매우나쁨"
+
+    return msg2_5, msg10
+
 
 #getNowAirPollution("37.5488", "126.6578")

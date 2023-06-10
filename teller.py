@@ -12,9 +12,9 @@ import re
 from datetime import date, datetime, timedelta
 from CopyToClipboard import copyToClipboard
 from getWeather import getWeather
-from getFineDust import getNowAirPollution
+from getFineDust import getNowAirPollution, getNowAirPollutionMassage
 import datetime
-from getLocation import geocoding_reverse
+from getLocation import geocoding_reverse, geocoding
 
 
 import noti
@@ -121,10 +121,15 @@ def handle(msg):
         return
 
     text = msg['text']
-    args = text.split(' ')
+    args = text.split(', ')
 
-    if text.startswith('안녕'):
-        noti.sendMessage(chat_id, '오늘의 준비물 봇 입니다. \n 모든 정보를 확인하고 싶으면 "전체"를 입력하세요!')
+    if text.startswith('명령어'):
+        noti.sendMessage(chat_id, '[명령어 목록]\n'
+                                  '전체: 프로그램 내에서 검색한 위치의 전체 정보를 출력합니다!\n'
+                                  '준비물: 프로그램 내에서 검색한 위치의 준비물 정보를 출력합니다!'
+                                  '\n날씨: 프로그램 내에서 검색한 위치의 날씨 정보를 출력합니다!\n'
+                                  '미세먼지: 프로그램 내에서 검색한 위치의 미세먼지 정보를 출력합니다!\n'
+                                  '검색, [지역]: 입력하신 지역의 전체 정보를 출력합니다!')
 
     elif text.startswith('전체'):
         output_text = copyToClipboard(t_lat, t_lng, t_msg2_5, t_msg10)
@@ -142,8 +147,15 @@ def handle(msg):
         output_text = chatbot(t_lat, t_lng, t_msg2_5, t_msg10, 3)
         noti.sendMessage(chat_id, output_text)
 
+    elif text.startswith('검색') and len(args) > 1:
+        print('try to 검색')
+        search_location = geocoding(args[1])
+        search_msg2_5, search_msg10 = getNowAirPollutionMassage(float(search_location['lat']), float(search_location['lng']))
+        output_text = copyToClipboard(float(search_location['lat']), float(search_location['lng']), search_msg2_5, search_msg10)
+        noti.sendMessage(chat_id, output_text)
+
     else:
-        noti.sendMessage(chat_id, '모르는 명령어입니다.\n전체, 준비물, 날씨, 미세먼지 중 하나의 명령을 입력하세요.')
+        noti.sendMessage(chat_id, '[명령어 목록]\n전체, 준비물, 날씨, 미세먼지 중 하나의 명령을 입력하세요.')
 
 def telepot_run():
     today = date.today()

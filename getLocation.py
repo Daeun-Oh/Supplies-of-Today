@@ -27,7 +27,11 @@ def geocoding_reverse(lat_lng_str):
             else:
                 msgAddr.append(address[-5])
         else:
-            msgAddr.append(address[-5])
+            if address[-5].find('구') != -1:
+                print(address[-5].find('구'))
+                msgAddr.append(address[-6])
+            else:
+                msgAddr.append(address[-5])
     print(msgAddr)
 
     for lm in msgAddr:

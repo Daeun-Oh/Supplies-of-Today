@@ -4,7 +4,7 @@ import pandas as pd
 from getMap import *
 from getLocation import *
 from getWeather import getWeather
-from getFineDust import getNowAirPollution
+from getFineDust import getNowAirPollutionMassage
 from CopyToClipboard import copyToClipboard
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
@@ -52,17 +52,23 @@ class ProjectSoT:
         self.InitFrame1()
 
     def firstCombobox_selected(self, event):
-        selectedValue = self.firstCombobox.get()
-        self.entryText[0] = selectedValue
+        self.firstSelectedValue = self.firstCombobox.get()
+        if self.firstSelectedValue == '제주특별자치도':
+            self.entryText[0] = '제주'
+        else:
+            self.entryText[0] = self.firstSelectedValue
         self.secondCombobox['values'] = []
         self.thirdCombobox['values'] = []
-        filteredData = self.df[self.df['1단계'] == selectedValue]
+        filteredData = self.df[self.df['1단계'] == self.firstSelectedValue]
         self.secondCombobox['values'] = filteredData['2단계'].drop_duplicates().tolist()
 
     def secondCombobox_selected(self, event):
-        selectedValue = self.secondCombobox.get()
-        self.entryText[1] = selectedValue
-        filteredData = self.df[(self.df['1단계'] == self.entryText[0]) & (self.df['2단계'] == selectedValue)]
+        self.secondSelectedValue = self.secondCombobox.get()
+        if self.secondSelectedValue.find('시') != -1:
+            self.entryText[1] = self.secondSelectedValue[:self.secondSelectedValue.find('시')+1]
+        else:
+            self.entryText[1] = self.secondSelectedValue
+        filteredData = self.df[(self.df['1단계'] == self.firstSelectedValue) & (self.df['2단계'] == self.secondSelectedValue)]
         self.thirdCombobox['values'] = filteredData['3단계'].tolist()
 
     def thirdCombobox_selected(self, event):
@@ -233,7 +239,7 @@ class ProjectSoT:
         weatherImage = weatherImage.resize((300, 240))  # 이미지 크기 조정
 
         # 텍스트 설정
-        msg2_5, msg10 = self.fineDust()
+        msg2_5, msg10 = getNowAirPollutionMassage(self.locationCoor['lat'], self.locationCoor['lng'])
         text1 = "초미세먼지: "+msg2_5
         text2 = "미세먼지: "+msg10
         font_size = 15  # 폰트 크기
@@ -375,34 +381,10 @@ class ProjectSoT:
         canvas2.get_tk_widget().pack(side='left')
 
     def button3_clicked(self, msg2_5, msg10):
-        webbrowser.open('https://t.me/todaysupplies_bot')
+        webbrowser.open('https://t.me/todaysSupplies_bot')
         getInfo(round(float(self.locationCoor['lat']), 4), round(float(self.locationCoor['lng']), 4), msg2_5, msg10)
         t = threading.Thread(target=telepot)
         t.start()
-
-    def fineDust(self):
-        pm2_5, pm10 = getNowAirPollution(self.locationCoor['lat'], self.locationCoor['lng'])
-        pm2_5, pm10 = float(pm2_5), float(pm10)
-        print(pm2_5, pm10)
-        if pm2_5 <= 15.0:
-            msg2_5 = "좋음"
-        elif pm2_5 <= 35.0:
-            msg2_5 = "보통"
-        elif pm2_5 <= 75.0:
-            msg2_5 = "나쁨"
-        else:
-            msg2_5 = "매우나쁨"
-
-        if pm10 <= 30.0:
-            msg10 = "좋음"
-        elif pm10 <= 80.0:
-            msg10 = "보통"
-        elif pm10 <= 150.0:
-            msg10 = "나쁨"
-        else:
-            msg10 = "매우나쁨"
-
-        return msg2_5, msg10
 
     def recommend_outfit(self):
         self.button1.config(state="disabled")   # 옷차림 버튼 비활성화
