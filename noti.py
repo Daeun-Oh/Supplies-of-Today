@@ -13,7 +13,7 @@ from datetime import date, datetime, timedelta
 import traceback
 
 key = 'sea100UMmw23Xycs33F1EQnumONR%2F9ElxBLzkilU9Yr1oT4TrCot8Y2p0jyuJP72x9rG9D8CN5yuEs6AS2sAiw%3D%3D'
-TOKEN = '5771153317:AAGhCtUJ53N0E4L4QGR5Kornthf0yvbYxGU'
+TOKEN = ''
 MAX_MSG_LENGTH = 300
 baseurl = 'http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade?ServiceKey='+key
 bot = telepot.Bot(TOKEN)
