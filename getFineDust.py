@@ -4,7 +4,7 @@ import json
 import datetime
 
 
-service_key = "89d61ef6b4bbaeb66f8114007e4a9c08"
+service_key = "Input Your Key"
 
 
 def getNowAirPollution(pos_lat, pos_lon):
